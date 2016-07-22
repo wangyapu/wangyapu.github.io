@@ -1,0 +1,82 @@
+# Site settings
+title: Wang Yapu Blog
+SEOTitle: 王亚普的博客 | Wyp Blog
+header-img: img/home-bg.jpg
+email: 570754729@qq.com
+description: "Java、Go、Docker、Nginx爱好者, 折腾各种开发工具的高效开发"
+keyword: "王亚普 博客 互联网 服务端技术"
+url: "http://wangyapu0714.github.io"              # your host, for absolute URL
+baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
+
+
+
+# SNS settings
+RSS: false
+#weibo_username:     PGWW-2814
+zhihu_username:     wang-ya-pu
+github_username:    wangyapu0714
+#twitter_username:  huxpro
+#facebook_username:  huxpro
+
+
+
+# Build settings
+# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
+highlighter: rouge
+permalink: pretty
+paginate: 10
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
+anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+
+
+
+# Gems
+# from PR#40, to support local preview for Jekyll 3.0
+gems: [jekyll-paginate]
+
+
+
+# Markdown settings
+# replace redcarpet to kramdown,
+# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
+# document: http://jekyllrb.com/docs/configuration/#kramdown
+markdown: kramdown
+kramdown:
+  input: GFM                            # use Github Flavored Markdown !important
+
+
+
+# Disqus settings
+#disqus_username: _your_disqus_short_name_
+
+# Duoshuo settings
+duoshuo_username: wangyapu
+# Share component is depend on Comment so we can NOT use share only.
+duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+
+
+
+# Sidebar settings
+sidebar: true                           # whether or not using Sidebar.
+sidebar-about-description: "世界那么大，我也不想写代码"
+sidebar-avatar: /img/head.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+
+
+
+# Featured Tags
+featured-tags: true                     # whether or not using Feature-Tags
+featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+
+
+catalog: true
+
+# Friends
+friends: [
+    {
+        title: "xunxinkun的博客",
+        href: "http://xuxinkun.github.io"
+    },{
+        title: "Luke的自留地",
+        href: "http://hmqk1995.github.io"
+    }
+]
