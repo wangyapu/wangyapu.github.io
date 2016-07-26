@@ -186,12 +186,14 @@ struct ngx_listening_s {
 
 配置举例：
 
-    worker_processes 12;  
+```
+worker_processes 12;  
 
-    events {  
-        use epoll;  
-        worker_connections 2048000;  
-    }  
+events {  
+    use epoll;  
+    worker_connections 2048000;  
+}
+```
 
 在linux系统中，每一个进程能够打开的文件描述符fd是有限的。通过ulimit -n，可以得到一个进程所能够打开的fd的最大数，因为每个socket连接会占用掉一个fd，所以这也会限制我们进程的最大连接数，当然也会直接影响到我们程序所能支持的最大并发数，当fd用完后，再创建socket时，就会失败。Linux系统中open file resource limit的值可以通过如下方式修改：
 
