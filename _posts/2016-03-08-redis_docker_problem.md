@@ -79,22 +79,24 @@ tags:
 
 ### 现象5：devicemapper的使用空间显示已满
 
-    $ > docker info 
-    Containers: 21
-    Images: 79
-    Storage Driver: devicemapper
-    Pool Name: docker-8:2-4851000-pool
-    Pool Blocksize: 65.54 kB
-    Data file: /dev/sda3
-    Metadata file: /var/lib/docker/devicemapper/devicemapper/metadata
-    Data Space Used: 1.677 TB
-    Data Space Total: 1.677 TB
-    Metadata Space Used: 852.1 MB
-    Metadata Space Total: 10.74 GB
-    Library Version: 1.02.82-git (2013-10-04)
-    Execution Driver: native-0.2
-    Kernel Version: 2.6.32-431.29.2.el6.x86_64
-    
+```bash
+$ > docker info 
+Containers: 21
+Images: 79
+Storage Driver: devicemapper
+Pool Name: docker-8:2-4851000-pool
+Pool Blocksize: 65.54 kB
+Data file: /dev/sda3
+Metadata file: /var/lib/docker/devicemapper/devicemapper/metadata
+Data Space Used: 1.677 TB
+Data Space Total: 1.677 TB
+Metadata Space Used: 852.1 MB
+Metadata Space Total: 10.74 GB
+Library Version: 1.02.82-git (2013-10-04)
+Execution Driver: native-0.2
+Kernel Version: 2.6.32-431.29.2.el6.x86_64
+```
+
 ## 问题排查
 
 
@@ -115,16 +117,18 @@ tags:
     docker的启动参数配置成--storage-opt dm.loopdatasize=85G --storage-opt 
     dm.basesize=80G，本地只启动一个容器，执行一个脚本，脚本内容如下：
 
-    #!/bin/bash
-    cd /tmp
-    while true
-    do
-    	dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
-    	echo "creat hello.txt success"
-    	rm -rf hello.txt
-    	echo "rm hello.txt success"
-    	sleep 1
-    done
+```bash
+#!/bin/bash
+cd /tmp
+while true
+do
+    dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
+    echo "creat hello.txt success"
+    rm -rf hello.txt
+    echo "rm hello.txt success"
+    sleep 1
+done
+```
 
 **实验结果**
 
