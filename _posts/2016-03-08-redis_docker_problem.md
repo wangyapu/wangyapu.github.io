@@ -150,7 +150,9 @@ done
     docker的启动参数依然配置成--storage-opt dm.loopdatasize=85G --storage-opt
     dm.basesize=80G，本地启动两个容器A和B，首先在容器A里运行上述实验中同样的
     脚本，在Data Space Used停留在80G不再上涨后，进入容器B，执行：
-    dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
+```bash
+dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
+```
     
 **实验结果**
 
