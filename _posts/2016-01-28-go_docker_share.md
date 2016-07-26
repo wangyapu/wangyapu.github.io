@@ -170,18 +170,21 @@ Struct | xxx{} | 结构体
 
 --------------------
 
-    type Animal interface {
-         Name() string
-    }
+```go
+type Animal interface {
+     Name() string
+}
 
-    type Cat struct {
-         name string
-    }
+//结构体Cat实现了接口类型Animal
+type Cat struct {
+     name string
+}
 
-    func (cat Cat) Name() string {
-         return cat.name
-    }
-    结构体Cat实现了接口类型Animal
+func (cat Cat) Name() string {
+     return cat.name
+}
+```
+
     
 ## 匿名函数与闭包
 
@@ -223,44 +226,66 @@ func main() {
 
 ## error
 
-    func Foo(param int) (n int, err error) { 
-        // ...
-    }
+```go
+func Foo(param int) (n int, err error) { 
+    // ...
+}
 
-    n, err := Foo(0)
-    if err != nil { 
-        // 错误处理
-    } else {
-    	// 使用返回值n
-    }
+n, err := Foo(0)
+if err != nil { 
+    // 错误处理
+} else {
+	// 使用返回值n
+}
+```
     
 ## defer
 
-    函数需要退出时,就必须使用goto语句跳转到指定位 置先完成资源清理工作。
+- 函数需要退出时,就必须使用goto语句跳转到指定位置先完成资源清理工作。
 
-    一个函数中可以存在多个defer语句,defer语句的调用是遵照先进后出的原则,即最
-    后一个defer语句将最先被执行。
+- 一个函数中可以存在多个defer语句,defer语句的调用是遵照先进后出的原则,即最
+后一个defer语句将最先被执行。
 
-    func TestChannelBufferTimeout(t *testing.T) {
-    	expected := "11"
+```go
+func TestChannelBufferTimeout(t *testing.T) {
+	expected := "11"
 
-    	buf := &ChannelBuffer{make(chan []byte, 1)}
-    	defer buf.Close()
+	buf := &ChannelBuffer{make(chan []byte, 1)}
+	defer buf.Close()
 
-    	go func() {
-    		time.Sleep(100 * time.Millisecond)
-    		io.Copy(buf, strings.NewReader(expected))
-    	}()
-    }
+	go func() {
+		time.Sleep(100 * time.Millisecond)
+		io.Copy(buf, strings.NewReader(expected))
+	}()
+}
+```
     
 ## panic && recover
 
-    当在一个函数执行过程中调用panic()函数时,正常的函数执行流程将立即终止,但函
-    数中之前使用defer关键字延迟执行的语句将正常展开执行。
+- 当在一个函数执行过程中调用panic()函数时,正常的函数执行流程将立即终止,但函数中之前使用defer关键字延迟执行的语句将正常展开执行。
 
-    recover()函数用于终止错误处理流程,经常与defer结合使用。
+- recover()函数用于终止错误处理流程,经常与defer结合使用。
 
-    demo: exception.go
+```go
+func main() {
+
+	Try(func() {
+		panic("error happens")
+	}, func(error interface{}) {
+		fmt.Println(error)
+	})
+
+}
+
+func Try(fun func(), handler func(interface{})) {
+	defer func() {
+		if err := recover(); err != nil {
+			handler(err)
+		}
+	}()
+	fun()
+}
+```
     
 ## 反射、语言交互、同步等等
     
@@ -268,17 +293,18 @@ func main() {
 
 ## 并发和并行
 
-    并发在于结构，并行在执行。
+- 并发在于结构，并行在执行。
 
-    并行：单核CPU是永远不可能并行的
+- 并行：单核CPU是永远不可能并行的。
 
-    单个CPU多线程实现的伪并行，是一个CPU在多个程序之间切换，让我们以为是同时
-    执行。而实际上就是线性执行；
+- 单个CPU多线程实现的伪并行，是一个CPU在多个程序之间切换，让我们以为是同时
+执行。而实际上就是线性执行；
 
-    多个CPU同时负责多个线程才是并行。
+- 多个CPU同时负责多个线程才是并行。
 
-    并发：只要你的代码写了多线程就是并发。
-    
+- 并发：只要你的代码写了多线程就是并发。
+
+
 ## 多线程模型
 
 - **python、lua （用户级线程模型M:1）**
@@ -302,10 +328,8 @@ func main() {
     现代计算机多个核，一个人一个进程，Happy！
     然而任务数多于核数了怎么办？
     
-    
-------------------
 
-    生产者消费者模型的基于抢占式多线程编程实现：
+生产者消费者模型的基于抢占式多线程编程实现：
 
     // 消费者线程
     loop
@@ -323,9 +347,9 @@ func main() {
       add the items to q
       unlock(q)
  
---------------------
 
-    基于协程的生产者消费者模型实现：
+基于协程的生产者消费者模型实现：
+
     // 生产者协程
     loop
       while q is not full
@@ -341,28 +365,55 @@ func main() {
 
 -----------------
 
-    本质上协程就是用户空间下的线程。不受操作系统管理的独立控制流。
+本质上协程就是用户空间下的线程。不受操作系统管理的独立控制流。
 
-    在用户态为每个协程维护调用上下文，以前都是内核帮你维护了，现在要用户态自
-    己来，好处呢就是自己可以控制协程的状态，start, stop, 切换到另外一个协程。
+在用户态为每个协程维护调用上下文，以前都是内核帮你维护了，现在要用户态自
+己来，好处呢就是自己可以控制协程的状态，start, stop, 切换到另外一个协程。
     
 ## channel
 
-    channel是go语言用于goroutine间的通信方式。
-    不要通过共享内存来通信,而应该通过通信来共享内存。
+- channel是go语言用于goroutine间的通信方式。
+- 不要通过共享内存来通信,而应该通过通信来共享内存。
 
-## 非缓冲channel && 缓冲channel
+### 非缓冲channel && 缓冲channel
 
-    无缓冲： 不仅仅是向 c1 通道放 1，而是一直要等有别的协程 <-c1 
-    接手了这个参数，那么c1<-1才会继续下去，要不然就一直阻塞着。
-    具有同步传递的特性。
+无缓冲： 不仅仅是向 c1 通道放 1，而是一直要等有别的协程 <-c1 
+接手了这个参数，那么c1<-1才会继续下去，要不然就一直阻塞着。
+具有同步传递的特性。
 
-    有缓冲： c2<-1 则不会阻塞，因为缓冲大小是1(其实是缓冲大小为0)，只有当放第
-    二个值的时候，第一个还没被人拿走，这时候才会阻塞。
+有缓冲： c2<-1 则不会阻塞，因为缓冲大小是1(其实是缓冲大小为0)，只有当放第
+二个值的时候，第一个还没被人拿走，这时候才会阻塞。
 
-    demo: unbuf_with_buf_channel.go
+```go
+func main() {
+	jobs := make(chan int,1)
+	done := make(chan bool)
+	go func() {
+		for i := 1;; i++ {
+			j, more := <-jobs
+			time.Sleep(time.Second)
+			if more {
+				fmt.Println("received job", j)
+			} else {
+				fmt.Println("received all jobs")
+				done <- true
+				return
+			}
+		}
+	}()
+	for j := 1; j <= 3; j++ {
+		jobs <- j
+		fmt.Println("sent job", j)
+	}
+
+	close(jobs)
+	fmt.Println("sent all jobs")
+
+	<-done
+}
+```
     
-## select机制
+### select机制
 
     监控一系列的文件句柄,一旦其中一个文件句柄发生了IO动作,该select()调用就会
     被返回。后来该机制也被用于实现高并发的Socket服务器程序。
@@ -373,7 +424,7 @@ func main() {
 
     demo：timeout.go
 
-## 多核并行
+### 多核并行
 
     demo: test_pi.go
 
