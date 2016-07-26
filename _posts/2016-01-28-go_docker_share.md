@@ -479,21 +479,23 @@ Network | CLONE_NEWNET | 网络设备、网络栈、端口等等
 
 ## 模拟network namespace
 
-    brctl addbr lxcbr0
-    brctl stp lxcbr0 off
-    ifconfig lxcbr0 192.168.10.1/24 up
-    ip netns add ns1 
-    ip netns exec ns1 ip link set dev lo up 
-    ip link add veth-ns1 type veth peer name lxcbr0.1
-    ip link set veth-ns1 netns ns1
-    ip netns exec ns1 ip link set dev veth-ns1 name eth0 
-    ip netns exec ns1 ifconfig eth0 192.168.10.11/24 up
-    brctl addif lxcbr0 lxcbr0.1
-    ifconfig lxcbr0 up
-    ifconfig lxcbr0.1 up
-    ip netns exec ns1 ip route add default via 192.168.10.1
-    mkdir -p /etc/netns/ns1
-    echo "nameserver 8.8.8.8" > /etc/netns/ns1/resolv.conf
+```bash
+brctl addbr lxcbr0
+brctl stp lxcbr0 off
+ifconfig lxcbr0 192.168.10.1/24 up
+ip netns add ns1 
+ip netns exec ns1 ip link set dev lo up 
+ip link add veth-ns1 type veth peer name lxcbr0.1
+ip link set veth-ns1 netns ns1
+ip netns exec ns1 ip link set dev veth-ns1 name eth0 
+ip netns exec ns1 ifconfig eth0 192.168.10.11/24 up
+brctl addif lxcbr0 lxcbr0.1
+ifconfig lxcbr0 up
+ifconfig lxcbr0.1 up
+ip netns exec ns1 ip route add default via 192.168.10.1
+mkdir -p /etc/netns/ns1
+echo "nameserver 8.8.8.8" > /etc/netns/ns1/resolv.conf
+```
 
 # Cgroup
 
