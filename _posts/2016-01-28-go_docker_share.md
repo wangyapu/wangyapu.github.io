@@ -377,11 +377,11 @@ func Try(fun func(), handler func(interface{})) {
 
 ### 非缓冲channel && 缓冲channel
 
-无缓冲： 不仅仅是向 c1 通道放 1，而是一直要等有别的协程 <-c1 
+- 无缓冲： 不仅仅是向 c1 通道放 1，而是一直要等有别的协程 <-c1 
 接手了这个参数，那么c1<-1才会继续下去，要不然就一直阻塞着。
 具有同步传递的特性。
 
-有缓冲： c2<-1 则不会阻塞，因为缓冲大小是1(其实是缓冲大小为0)，只有当放第
+- 有缓冲： c2<-1 则不会阻塞，因为缓冲大小是1(其实是缓冲大小为0)，只有当放第
 二个值的时候，第一个还没被人拿走，这时候才会阻塞。
 
 ```go
@@ -415,18 +415,105 @@ func main() {
     
 ### select机制
 
-    监控一系列的文件句柄,一旦其中一个文件句柄发生了IO动作,该select()调用就会
-    被返回。后来该机制也被用于实现高并发的Socket服务器程序。
+监控一系列的文件句柄,一旦其中一个文件句柄发生了IO动作,该select()调用就会
+被返回。后来该机制也被用于实现高并发的Socket服务器程序。
 
-    Go语言直接在语言级别支持select关键字,用于处理异步IO问题。
+Go语言直接在语言级别支持select关键字，用于处理异步IO问题。
 
-    常见用法：超时处理，
+常见用法：超时处理。
 
-    demo：timeout.go
+```go
+package main
+
+import (
+	"time"
+	"fmt"
+)
+
+func main() {
+	DoSomething()
+	fmt.Println("task end")
+}
+
+func DoSomething() error {
+	done := make(chan error)
+	go func() {
+		done <- DoThing()
+	}()
+
+	select {
+	case <-time.After(time.Second * 10):
+		Clear()
+		return fmt.Errorf("Timeout")
+	case err := <-done:
+		if err != nil {
+			err = fmt.Errorf("call failed, err %v", err)
+		}
+		return err
+	}
+}
+
+func DoThing() (error) {
+	fmt.Println("do some thing")
+	time.Sleep(time.Second * 14)
+	return nil
+}
+
+func Clear() {
+	fmt.Println("clear job")
+	time.Sleep(time.Second * 5)
+}
+```
 
 ### 多核并行
 
-    demo: test_pi.go
+```go
+import (
+	"fmt"
+	"runtime"
+	"time"
+)
+
+var n int64 = 10000000000
+var h float64 = 1.0 / float64(n)
+
+func f(a float64) float64 {
+	return 4.0 / (1.0 + a * a)
+}
+
+func chunk(start, end int64, c chan float64) {
+	var sum float64 = 0.0
+	for i := start; i < end; i++ {
+		x := h * (float64(i) + 0.5)
+		sum += f(x)
+	}
+	c <- sum * h
+}
+
+func main() {
+
+	start := time.Now()
+
+	var pi float64
+	np := runtime.NumCPU()
+	runtime.GOMAXPROCS(np)
+	c := make(chan float64, np)
+
+	for i := 0; i < np; i++ {
+		go chunk(int64(i) * n / int64(np), (int64(i) + 1) * n / int64(np), c)
+	}
+
+	for i := 0; i < np; i++ {
+		pi += <-c
+	}
+
+	fmt.Println("Pi: ", pi)
+
+	end := time.Now()
+
+	fmt.Printf("spend time: %vs\n", end.Sub(start).Seconds())
+}
+```
 
     
 # Docker
@@ -464,69 +551,344 @@ Network | CLONE_NEWNET | 网络设备、网络栈、端口等等
 
 ## 系统调用clone
 
-    demo: clone.c
-    
-    #define _GNU_SOURCE
-    
-    #include <sys/types.h>
-    #include <sys/wait.h>
-    #include <stdio.h>
-    #include <sched.h>
-    #include <signal.h>
-    #include <unistd.h>
-    
-    /* 定义一个给 clone 用的栈，栈大小1M */
-    #define STACK_SIZE (1024 * 1024)
-    static char container_stack[STACK_SIZE];
-    
-    char *const container_args[] = {
-            "/bin/bash",
-            NULL
-    };
-    
-    int container_main(void *arg) {
-        printf("Container - inside the container!\n");
-        execv(container_args[0], container_args);
-        printf("Something's wrong!\n");
-        return 1;
-    }
-    
-    int main() {
-        printf("Parent - start a container!\n");
-        /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
-        /*
-         * 在一个进程终止或者停止时，将SIGCHLD信号发送给其父进程。按系统默认将忽略此信号。如果父进程希望被告知其子系统的这种状态，
-         * 则应捕捉此信号。信号的捕捉函数中通常调用wait函数以取得进程ID和其终止状态。
-         */
-        int container_pid = clone(container_main, container_stack + STACK_SIZE, SIGCHLD, NULL);
-        /* 等待子进程结束 */
-        waitpid(container_pid, NULL, 0);
-        printf("Parent - container stopped!\n");
-        return 0;
-    }
+```cpp    
+#define _GNU_SOURCE
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+/* 定义一个给 clone 用的栈，栈大小1M */
+#define STACK_SIZE (1024 * 1024)
+static char container_stack[STACK_SIZE];
+
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int container_main(void *arg) {
+    printf("Container - inside the container!\n");
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+    printf("Parent - start a container!\n");
+    /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+    /*
+     * 在一个进程终止或者停止时，将SIGCHLD信号发送给其父进程。按系统默认将忽略此信号。如果父进程希望被告知其子系统的这种状态，
+     * 则应捕捉此信号。信号的捕捉函数中通常调用wait函数以取得进程ID和其终止状态。
+     */
+    int container_pid = clone(container_main, container_stack + STACK_SIZE, SIGCHLD, NULL);
+    /* 等待子进程结束 */
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+```
     
 ## UTS
 
-    demo: uts.c
+```cpp
+#define _GNU_SOURCE
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+/* 定义一个给 clone 用的栈，栈大小1M */
+#define STACK_SIZE (1024 * 1024)
+static char container_stack[STACK_SIZE];
+
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int container_main(void *arg) {
+    printf("Container - inside the container!\n");
+
+    /*
+     * int gethostname(char *name, size_t len);
+       int sethostname(const char *name, size_t len);
+     */
+    sethostname("container", 10); /* 设置hostname */
+    /* 直接执行一个shell，以便我们观察这个进程空间里的资源是否被隔离了 */
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+    printf("Parent - start a container!\n");
+    /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+    int container_pid = clone(container_main, container_stack + STACK_SIZE, CLONE_NEWUTS | SIGCHLD, NULL);
+    /* 等待子进程结束 */
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+
+```
     
 ## IPC
 
-    demo: ipc.c
+```cpp
+#define _GNU_SOURCE
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+/* 定义一个给 clone 用的栈，栈大小1M */
+#define STACK_SIZE (1024 * 1024)
+static char container_stack[STACK_SIZE];
+
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int container_main(void *arg) {
+    printf("Container - inside the container!\n");
+
+    /*
+     * int gethostname(char *name, size_t len);
+       int sethostname(const char *name, size_t len);
+     */
+    sethostname("container", 10); /* 设置hostname */
+    /* 直接执行一个shell，以便我们观察这个进程空间里的资源是否被隔离了 */
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+    printf("Parent - start a container!\n");
+    /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+    int container_pid = clone(container_main, container_stack + STACK_SIZE, CLONE_NEWUTS | CLONE_NEWIPC | SIGCHLD,
+                              NULL);
+    /* 等待子进程结束 */
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+```
     
 ## PID
 
-    demo: pid.c
+```cpp
+#define _GNU_SOURCE
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+/* 定义一个给 clone 用的栈，栈大小1M */
+#define STACK_SIZE (1024 * 1024)
+static char container_stack[STACK_SIZE];
+
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int container_main(void *arg) {
+
+    printf("Container [%5d] - inside the container!\n", getpid());
+    /*
+     * int gethostname(char *name, size_t len);
+       int sethostname(const char *name, size_t len);
+     */
+    sethostname("container", 10); /* 设置hostname */
+    /* 直接执行一个shell，以便我们观察这个进程空间里的资源是否被隔离了 */
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+
+    printf("Parent [%5d] - start a container!\n", getpid());
+    /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+    int container_pid = clone(container_main, container_stack + STACK_SIZE,
+                              CLONE_NEWUTS | CLONE_NEWIPC | CLONE_NEWPID | SIGCHLD,
+                              NULL);
+    /* 等待子进程结束 */
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+```
     
 ## Mount
 
-    demo: mount.c
+```cpp
+#define _GNU_SOURCE
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+/* 定义一个给 clone 用的栈，栈大小1M */
+#define STACK_SIZE (1024 * 1024)
+static char container_stack[STACK_SIZE];
+
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int container_main(void *arg) {
+
+    printf("Container [%5d] - inside the container!\n", getpid());
+    /*
+     * int gethostname(char *name, size_t len);
+       int sethostname(const char *name, size_t len);
+     */
+    sethostname("container", 10); /* 设置hostname */
+    system("mount -t proc proc  /proc");
+    /* 直接执行一个shell，以便我们观察这个进程空间里的资源是否被隔离了 */
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+
+    printf("Parent [%5d] - start a container!\n", getpid());
+    /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+    int container_pid = clone(container_main, container_stack + STACK_SIZE,
+                              CLONE_NEWUTS | CLONE_NEWIPC | CLONE_NEWPID | CLONE_NEWNS | SIGCHLD,
+                              NULL);
+    /* 等待子进程结束 */
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+```
     
 ## User
 
-    GID为GroupId，即组ID，用来标识用户组的唯一标识符
-    UID为UserId，即用户ID，用来标识每个用户的唯一标示符
+GID为GroupId，即组ID，用来标识用户组的唯一标识符
+UID为UserId，即用户ID，用来标识每个用户的唯一标示符
 
-    demo: user.c
+```cpp
+#define _GNU_SOURCE
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/mount.h>
+#include <sys/capability.h>
+#include <stdio.h>
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+
+#define STACK_SIZE (1024 * 1024)
+
+static char container_stack[STACK_SIZE];
+char *const container_args[] = {
+        "/bin/bash",
+        NULL
+};
+
+int pipefd[2];
+
+void set_map(char *file, int inside_id, int outside_id, int len) {
+    FILE *mapfd = fopen(file, "w");
+    if (NULL == mapfd) {
+        perror("open file error");
+        return;
+    }
+    fprintf(mapfd, "%d %d %d", inside_id, outside_id, len);
+    fclose(mapfd);
+}
+
+void set_uid_map(pid_t pid, int inside_id, int outside_id, int len) {
+    char file[256];
+    sprintf(file, "/proc/%d/uid_map", pid);
+    set_map(file, inside_id, outside_id, len);
+}
+
+void set_gid_map(pid_t pid, int inside_id, int outside_id, int len) {
+    char file[256];
+    sprintf(file, "/proc/%d/gid_map", pid);
+    set_map(file, inside_id, outside_id, len);
+}
+
+int container_main(void *arg) {
+
+    printf("Container [%5d] - inside the container!\n", getpid());
+
+    printf("Container: eUID = %ld;  eGID = %ld, UID=%ld, GID=%ld\n",
+           (long) geteuid(), (long) getegid(), (long) getuid(), (long) getgid());
+
+    /* 等待父进程通知后再往下执行（进程间的同步） */
+    char ch;
+    close(pipefd[1]);
+    read(pipefd[0], &ch, 1);
+
+    printf("Container [%5d] - setup hostname!\n", getpid());
+    //set hostname
+    sethostname("container", 10);
+
+    //remount "/proc" to make sure the "top" and "ps" show container's information
+    mount("proc", "/proc", "proc", 0, NULL);
+
+    execv(container_args[0], container_args);
+    printf("Something's wrong!\n");
+    return 1;
+}
+
+int main() {
+    const int gid = getgid(), uid = getuid();
+
+    printf("Parent: eUID = %ld;  eGID = %ld, UID=%ld, GID=%ld\n",
+           (long) geteuid(), (long) getegid(), (long) getuid(), (long) getgid());
+
+    pipe(pipefd);
+
+    printf("Parent [%5d] - start a container!\n", getpid());
+
+    int container_pid = clone(container_main, container_stack + STACK_SIZE,
+                              CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUSER | SIGCHLD, NULL);
+
+
+    printf("Parent [%5d] - Container [%5d]!\n", getpid(), container_pid);
+
+    set_uid_map(container_pid, 0, uid, 1);
+    set_gid_map(container_pid, 0, gid, 1);
+
+    printf("Parent [%5d] - user/group mapping done!\n", getpid());
+
+    /* 通知子进程 */
+    close(pipefd[1]);
+
+    waitpid(container_pid, NULL, 0);
+    printf("Parent - container stopped!\n");
+    return 0;
+}
+```
     
 ## Network
     
@@ -567,25 +929,29 @@ echo "nameserver 8.8.8.8" > /etc/netns/ns1/resolv.conf
 
 ## Cpu限制
 
-    cd /sys/fs/cgroup/cpu
-    sudo mkdir wyp
-    cat /sys/fs/cgroup/cpu/wyp/cpu.cfs_quota_us
-    echo 40000 > /sys/fs/cgroup/cpu/wyp/cpu.cfs_quota_us
-    top
-    echo pid >> /sys/fs/cgroup/cpu/wyp/tasks
-    top
-    
+```bash
+cd /sys/fs/cgroup/cpu
+sudo mkdir wyp
+cat /sys/fs/cgroup/cpu/wyp/cpu.cfs_quota_us
+echo 40000 > /sys/fs/cgroup/cpu/wyp/cpu.cfs_quota_us
+top
+echo pid >> /sys/fs/cgroup/cpu/wyp/tasks
+top
+```
 
 ## 内存限制
 
-    mkdir /sys/fs/cgroup/memory/wyp
-    echo 128k > /sys/fs/cgroup/memory/wyp/memory.limit_in_bytes
-    echo [pid] > /sys/fs/cgroup/memory/wyp/tasks
+```bash
+mkdir /sys/fs/cgroup/memory/wyp
+echo 128k > /sys/fs/cgroup/memory/wyp/memory.limit_in_bytes
+echo [pid] > /sys/fs/cgroup/memory/wyp/tasks
+```
 
 ## 磁盘IO限制
 
-    mkdir /sys/fs/cgroup/blkio/wyp
-    sudo dd if=/dev/sda1 of=/dev/null
-    echo '8:0 1048576' >  /sys/fs/cgroup/blkio/wyp/blkio.throttle.read_bps_device 
-    echo [tid] > /sys/fs/cgroup/blkio/wyp/tasks
-    
+```bash
+mkdir /sys/fs/cgroup/blkio/wyp
+sudo dd if=/dev/sda1 of=/dev/null
+echo '8:0 1048576' >  /sys/fs/cgroup/blkio/wyp/blkio.throttle.read_bps_device
+echo [tid] > /sys/fs/cgroup/blkio/wyp/tasks
+```
