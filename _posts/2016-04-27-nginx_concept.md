@@ -15,7 +15,7 @@ tags:
 
 在core模块下有ngx_connection.h和Ngx_connection.c两个文件，从ngx_connection.h可以看到ngx_listening_s的数据结构：
 
-```c
+```cpp
 struct ngx_connection_s {
     /*
     连接未使用时，data成员用于充当连接池中空闲连接链表中的next指针。当连接被使用时，data的意义由使用它的nginx模块而定，
@@ -186,7 +186,7 @@ struct ngx_listening_s {
 
 配置举例：
 
-```sh
+```bash
 worker_processes 12;  
 
 events {  
