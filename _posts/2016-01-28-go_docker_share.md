@@ -187,22 +187,37 @@ Struct | xxx{} | 结构体
 
 ## 匿名函数
 
-    Go里面,函数可以像普通变量一样被传递或使用
+Go里面函数可以像普通变量一样被传递或使用。
 
-    f := func(x, y int) int { 
-        return x + y
-    }
+```go
+f := func(x, y int) int { 
+    return x + y
+}
 
-    f := func(x, y int) int { 
-        return x + y
-    }(2,3)
-    
+f := func(x, y int) int { 
+    return x + y
+}(2,3)
+```    
 
 ## 闭包
 
-    闭包的价值在于能够被函数动态创建和返回。
+闭包的价值在于能够被函数动态创建和返回。
 
-    demo: closure.go
+```go
+func main() {
+	var j int = 5
+	a := func() (func()) {
+		var i int = 10
+		i++
+		return func() {
+			fmt.Printf("i, j: %d, %d\n", i, j)
+		}
+	}()
+	a()
+	j *= 2
+	a()
+}
+```
 
 ## 错误处理
 
