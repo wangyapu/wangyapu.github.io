@@ -400,6 +400,45 @@ Network | CLONE_NEWNET | 网络设备、网络栈、端口等等
 
     demo: clone.c
     
+    #define _GNU_SOURCE
+    
+    #include <sys/types.h>
+    #include <sys/wait.h>
+    #include <stdio.h>
+    #include <sched.h>
+    #include <signal.h>
+    #include <unistd.h>
+    
+    /* 定义一个给 clone 用的栈，栈大小1M */
+    #define STACK_SIZE (1024 * 1024)
+    static char container_stack[STACK_SIZE];
+    
+    char *const container_args[] = {
+            "/bin/bash",
+            NULL
+    };
+    
+    int container_main(void *arg) {
+        printf("Container - inside the container!\n");
+        execv(container_args[0], container_args);
+        printf("Something's wrong!\n");
+        return 1;
+    }
+    
+    int main() {
+        printf("Parent - start a container!\n");
+        /* 调用clone函数，其中传出一个函数，还有一个栈空间的（为什么传尾指针，因为栈是反着的） */
+        /*
+         * 在一个进程终止或者停止时，将SIGCHLD信号发送给其父进程。按系统默认将忽略此信号。如果父进程希望被告知其子系统的这种状态，
+         * 则应捕捉此信号。信号的捕捉函数中通常调用wait函数以取得进程ID和其终止状态。
+         */
+        int container_pid = clone(container_main, container_stack + STACK_SIZE, SIGCHLD, NULL);
+        /* 等待子进程结束 */
+        waitpid(container_pid, NULL, 0);
+        printf("Parent - container stopped!\n");
+        return 0;
+    }
+    
 ## UTS
 
     demo: uts.c
