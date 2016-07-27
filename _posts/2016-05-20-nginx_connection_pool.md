@@ -204,6 +204,23 @@ connections采用数组单链表实现，所有ngx_connection_t都以data成员�
 - 所有操作只需要操作链表的头结点，复杂度O（1）。
 
 
+### **Release 1.4.7 - 2016.7.14**
+#### 1. POM依赖
+
+```xml
+<dependency>
+   <groupId>com.dianping.cat</groupId>
+   <artifactId>cat-client</artifactId>
+  <version>1.4.7</version>
+ </dependency>
+```
+#### 2. 功能更新
+
+- [x]   增加了CAT启动的API，初始化传入appkey。如果默认存在app.properties，则以app.properties为准
+- [x]   默认采用本地client.xml，如果当没有本地client.xml，默认会从远端服务获取，服务是一个域名：http://cat.dianpingoa.com/ 内网都可以通，此api会自动识别当前ip网络，返回不同的client.xml
+- [x]   去除了一个cat依赖，把jsonparse采用自定义的parse，减少客户端依赖
+
+
 
 
 
