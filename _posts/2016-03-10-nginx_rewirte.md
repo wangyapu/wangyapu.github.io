@@ -69,86 +69,106 @@ rewrite是nginx一个特别重要的指令，该指令可以使用正则表达�
 ### 应用实例(摘自网络)
 
 > 当访问的文件和目录不存在时，重定向到某个php文件
-    
-    if( !-e $request_filename )
-    {
-        rewrite ^/(.*)$ index.php last;
-    }
+
+```
+if( !-e $request_filename )
+{
+    rewrite ^/(.*)$ index.php last;
+}
+```
     
 > 目录对换 /123456/xxxx  ====>  /xxxx?id=123456
 
-    rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
+```
+rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
+```
     
 > 如果客户端使用的是IE浏览器，则重定向到/ie目录下
 
-    if( $http_user_agent ~ MSIE)
-    {
-        rewrite ^(.*)$ /ie/$1 break;
-    }
+```
+if( $http_user_agent ~ MSIE)
+{
+    rewrite ^(.*)$ /ie/$1 break;
+}
+```    
     
 > 禁止访问以/data开头的文件
 
-    location ~ ^/data
-    {
-        deny all;
-    }
+```
+location ~ ^/data
+{
+    deny all;
+}
+```
     
 > 禁止访问以.sh，.flv，.mp3为文件后缀名的文件
 
-    location ~ .*\.(sh|flv|mp3)$
-    {
-        return 403;
-    }
+```
+location ~ .*\.(sh|flv|mp3)$
+{
+    return 403;
+}
+```
 
 > 设置某些类型文件的浏览器缓存时间
 
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
-    {
-        expires 30d;
-    }
+```
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+{
+    expires 30d;
+}
+```
 
 > 文件反盗链并设置过期时间
 
-    location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ 
-    {
-        valid_referers none blocked *.linuxidc.com*.linuxidc.net localhost 208.97.167.194;
-        if ($invalid_referer) {
-            rewrite ^/ http://img.linuxidc.net/leech.gif;
-            return 412;
-            break;
-        }
-        access_log  off;
-        root /opt/lampp/htdocs/web;
-        expires 3d;
+```
+location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ 
+{
+    valid_referers none blocked *.linuxidc.com*.linuxidc.net localhost 208.97.167.194;
+    if ($invalid_referer) {
+        rewrite ^/ http://img.linuxidc.net/leech.gif;
+        return 412;
         break;
     }
+    access_log  off;
+    root /opt/lampp/htdocs/web;
+    expires 3d;
+    break;
+}
+```
 
 > 将多级目录下的文件转成一个文件，增强seo效果
 
-    /job-123-456-789.html 指向/job/123/456/789.html
-    
-    rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
+```
+/job-123-456-789.html 指向/job/123/456/789.html
+
+rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
+```
 
 > 域名跳转
 
-    server
-    {
-        listen 80;
-        server_name jump.linuxidc.com;
-        index index.html index.htm index.php;
-        root /opt/lampp/htdocs/www;
-        rewrite ^/ http://www.linuxidc.com/;
-        access_log off;
-    }
+```
+server
+{
+    listen 80;
+    server_name jump.linuxidc.com;
+    index index.html index.htm index.php;
+    root /opt/lampp/htdocs/www;
+    rewrite ^/ http://www.linuxidc.com/;
+    access_log off;
+}
+```
     
 > 多域名转向
 
-    server_name www.linuxidc.comwww.linuxidc.net;
-    index index.html index.htm index.php;
-    root  /opt/lampp/htdocs;
-    if ($host ~ "linuxidc\.net") {
-        rewrite ^(.*) http://www.linuxidc.com$1permanent;
-    }
+```
+server_name www.linuxidc.comwww.linuxidc.net;
+index index.html index.htm index.php;
+root  /opt/lampp/htdocs;
+if ($host ~ "linuxidc\.net") {
+    rewrite ^(.*) http://www.linuxidc.com$1permanent;
+}
+```
 
 # 附录 —— nginx全局变量
 
