@@ -70,7 +70,7 @@ rewrite是nginx一个特别重要的指令，该指令可以使用正则表达�
 
 > 当访问的文件和目录不存在时，重定向到某个php文件
 
-```
+```bash
 if( !-e $request_filename )
 {
     rewrite ^/(.*)$ index.php last;
@@ -79,13 +79,13 @@ if( !-e $request_filename )
     
 > 目录对换 /123456/xxxx  ====>  /xxxx?id=123456
 
-```
+```bash
 rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
 ```
     
 > 如果客户端使用的是IE浏览器，则重定向到/ie目录下
 
-```
+```bash
 if( $http_user_agent ~ MSIE)
 {
     rewrite ^(.*)$ /ie/$1 break;
@@ -94,7 +94,7 @@ if( $http_user_agent ~ MSIE)
     
 > 禁止访问以/data开头的文件
 
-```
+```bash
 location ~ ^/data
 {
     deny all;
@@ -103,7 +103,7 @@ location ~ ^/data
     
 > 禁止访问以.sh，.flv，.mp3为文件后缀名的文件
 
-```
+```bash
 location ~ .*\.(sh|flv|mp3)$
 {
     return 403;
@@ -112,7 +112,7 @@ location ~ .*\.(sh|flv|mp3)$
 
 > 设置某些类型文件的浏览器缓存时间
 
-```
+```bash
 location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 {
     expires 30d;
@@ -121,7 +121,7 @@ location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 
 > 文件反盗链并设置过期时间
 
-```
+```bash
 location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ 
 {
     valid_referers none blocked *.linuxidc.com*.linuxidc.net localhost 208.97.167.194;
@@ -139,7 +139,7 @@ location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$
 
 > 将多级目录下的文件转成一个文件，增强seo效果
 
-```
+```bash
 /job-123-456-789.html 指向/job/123/456/789.html
 
 rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
@@ -147,7 +147,7 @@ rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
 
 > 域名跳转
 
-```
+```bash
 server
 {
     listen 80;
@@ -161,7 +161,7 @@ server
     
 > 多域名转向
 
-```
+```bash
 server_name www.linuxidc.comwww.linuxidc.net;
 index index.html index.htm index.php;
 root  /opt/lampp/htdocs;
