@@ -13,7 +13,7 @@ tags:
 
 ## 配置
 
-```
+```bash
 worker_processes 12;  
 
 events {  
@@ -24,8 +24,10 @@ events {
 
 在linux系统中，每一个进程能够打开的文件描述符fd是有限的。通过ulimit -n，可以得到一个进程所能够打开的fd的最大数，因为每个socket连接会占用掉一个fd，所以这也会限制我们进程的最大连接数，当然也会直接影响到我们程序所能支持的最大并发数，当fd用完后，再创建socket时，就会失败。Linux系统中open file resource limit的值可以通过如下方式修改：
 
-    echo "2390251" > /proc/sys/fs/file-max
-    sysctl -p
+```bash
+echo "2390251" > /proc/sys/fs/file-max
+sysctl -p
+```
     
 对于一个Nginx服务器来说，能创建的socket连接的最大数目可以达到``worker_processes*worker_connections``。
 
@@ -35,7 +37,7 @@ events {
 
 Nginx采用基本数据结构ngx_connection_t来表示由客户端主动发起、Nginx服务器被动接收的TCP连接，这类连接可以称为被动连接。ngx_peer_connection_t表示Nginx主动向其他上游服务器建立连接，并以此连接与上游服务器通信，这类连接可以称为主动连接。主动连接是以ngx_connection_t结构体为基础实现的。 
 
-```
+```cpp
 struct ngx_connection_s {
     /*
     连接未使用时，data成员用于充当连接池中空闲连接链表中的next指针。当连接被使用时，data的意义由使用它的nginx模块而定，
