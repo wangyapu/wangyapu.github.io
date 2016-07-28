@@ -43,11 +43,6 @@ $(document).ready(function() {
 
 // Navigation Scripts to Show Header on Scroll-Up
 jQuery(document).ready(function($) {
-
-    async("http://cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js", function(){
-        hljs.initHighlightingOnLoad();
-    })
-
     var MQL = 1170;
 
     //primary navigation slide-in effect
