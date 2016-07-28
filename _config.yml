@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: 570754729@qq.com
 description: "Java、Go、Docker、Nginx爱好者, 折腾各种开发工具的高效开发"
 keyword: "王亚普 博客 互联网 服务端技术"
-url: "https://wangyapu0714.github.io"              # your host, for absolute URL
+url: "http://wangyapu0714.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 
