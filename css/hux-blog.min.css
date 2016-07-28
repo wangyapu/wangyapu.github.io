@@ -202,7 +202,8 @@ article {
 }
 
 blockquote {
-    color: #808080;
+    /*color: #808080;*/
+    color: #42b983;
     font-style: italic;
     font-size: .95em;
     margin: 20px 0 20px
