@@ -1195,8 +1195,3 @@ img::-moz-selection {
 .donate_bar a.btn_donate:hover {
     background-position: 0 -82px
 }
-
-.donate_guide {
-    width: 182px;
-    height: 182px;
-}
