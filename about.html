@@ -161,7 +161,13 @@ header-img: "img/home-bg.jpg"
 <!-- 畅言 评论框 end -->
 
 <!-- 畅言 公共JS代码 start (一个网页只需插入一次) -->
-<script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
+<script charset="utf-8" type="text/javascript">
+    (function() {
+        var cy = document.createElement('script'); cy.type = 'text/javascript'; cy.async = true;
+        cy.src = "http://changyan.sohu.com/upload/changyan.js";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(cy);
+    })();
+</script>
 <script type="text/javascript">
     window.changyan.api.config({
         appid: 'cysUXlWx5',
