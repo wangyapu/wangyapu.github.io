@@ -47,14 +47,15 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: wangyapu
+#disqus_username: wangyapu
 
 # Duoshuo settings
 # duoshuo_username: wangyapu
 # Share component is depend on Comment so we can NOT use share only.
 # duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
-
+# changyan settings
+changyan_username: wangyapu
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.

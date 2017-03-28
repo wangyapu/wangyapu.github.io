@@ -172,5 +172,5 @@ dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
 
     出现问题的原因与devicemapper的nodiscard、Redis Aof机制以及磁盘超配相关，
     但是nodiscard参数绝对不能弃用的，建议的解决方案是：
-    1. Redis Aof产生的文件存储到外挂磁盘
+    1. Redis Aof产生的文件存储到外挂磁盘。
     2. 重新规划Redis集群的磁盘使用情况，禁止超配，再做观察。
