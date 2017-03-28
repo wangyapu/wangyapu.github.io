@@ -251,6 +251,23 @@ layout: default
 <!-- disqus 公共JS代码 end -->
 {% endif %}
 
+{% if site.changyan_username %}
+<!-- 畅言 评论框 start -->
+<div class="comment">
+<div id="SOHUCS" ></div>
+                    </div>
+<!-- 畅言 评论框 end -->
+
+<!-- 畅言 公共JS代码 start (一个网页只需插入一次) -->
+<script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+                                                                                                     <script type="text/javascript">
+window.changyan.api.config({
+    appid: 'cysUXlWx5',
+    conf: 'prod_4942ff5b5af83f77c4caaf316c8d0c96'
+});
+</script>
+<!-- 畅言 公共JS代码 end -->
+{% endif %}
 
 {% if site.anchorjs %}
 <!-- async load function -->
