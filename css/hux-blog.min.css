@@ -180,12 +180,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.1;
     font-weight: bold;
 
-    margin: 1.5em 5px !important;
-    padding: 0.5em 1em !important;
+    padding: 0.3em 0.3em !important;
 
 }
 
-.post-container > h1, h2, h3, h4, h5, h6 {
+.post-container h1, .post-container h2, .post-container h3, .post-container h4, .post-container h5, .post-container h6 {
     color: #009688 !important;
 }
 
