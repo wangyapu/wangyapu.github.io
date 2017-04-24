@@ -192,6 +192,10 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid #ddd !important;
 }
 
+.post-container h2 {
+    border-bottom: 1px solid #eee !important;
+}
+
 h4 {
     font-size: 21px
 }

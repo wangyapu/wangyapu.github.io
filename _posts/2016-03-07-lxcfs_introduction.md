@@ -15,8 +15,6 @@ tags:
 
 ## What is lxcfs
 
------------------
-
 FUSE filesystem for LXC, offering the following features:
 
 - a cgroupfs compatible view for unprivileged containers
@@ -32,8 +30,6 @@ In other words, it will provide an emulated `/proc` and `/sys/fs/cgroup` folder 
 
 ### Background One
 
------------------------------
-
 开发、运维：Cat显示的load不准啊，怎么回事啊？
 
     Java获取系统负载：
@@ -47,7 +43,6 @@ In other words, it will provide an emulated `/proc` and `/sys/fs/cgroup` folder 
         }
     }
 
------------------------
 
 nodejs
 
@@ -58,8 +53,6 @@ Go
     runtime.GOMAXPROCS()
 
 ### Background Two
-
------------------------------
 
     top
     uptime
@@ -150,13 +143,9 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
     sudo mkdir -p /var/lib/lxcfs
     sudo ./lxcfs -s -f -o allow_other /var/lib/lxcfs/
     
------------------------
-
 ### 启动容器
 
     docker run -it --rm --privileged=true --cpuset=0,1 -v /var/lib/lxcfs/proc/uptime:/proc/uptime:rw -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:rw -v /var/lib/lxcfs/proc/stat:/proc/stat -v /var/lib/lxcfs/cgroup/:/cgroup/:rw -v /var/lib/lxcfs/cpu/online:/cpu/online:rw -v /var/lib/lxcfs/proc/loadavg:/proc/loadavg:rw ubuntu:14.04 /bin/bash
-    
------------------------
     
 ### 原理介绍
 
@@ -214,8 +203,6 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
     nr_threads (364) 在采样时刻，系统中活跃的任务的个数（不包括运行已经结束的任务）
     last_pid(6930) 最大的pid值，包括轻量级进程，即线程。
 
----
-
 > **linux内核里如何计算load的：**
 
     系统平均负载被定义：在特定时间间隔内运行队列中的平均进程数。
@@ -268,15 +255,12 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
 
     由上面的分析可知，只要在用户态获取到当前运行队列的长度以及任务总数一切都迎刃而解。
 
----
-
 > **进程满足什么条件可以位于运行队列之中？**
 
     - 它没有在等待I/O操作的结果
     - 它没有主动进入等待状态(也就是没有调用'wait')
     - 没有被停止(例如：等待终止)
     
----
 
 > **Linux进程的几种状态**：
 
@@ -287,7 +271,6 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
     Z (TASK_DEAD – EXIT_ZOMBIE)，退出状态，进程成为僵尸进程。
     X (TASK_DEAD – EXIT_DEAD)，退出状态，进程即将被销毁。
 
----
 
 > **踩坑1：**
 
@@ -295,7 +278,6 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
 
     结果：有些内核版本并不好使，放弃。
 
----
 
 > **踩坑2：**
 
@@ -308,7 +290,6 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
 ![image](http://wangyapu0714.github.io/img/lxcfs/task_status.png)
 
     
---- 
 
 > **踩坑3：**
 
@@ -318,7 +299,5 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
 
         
 ## 参考资料
-
-------------------
 
 https://github.com/lxc/lxcfs/
