@@ -14,7 +14,7 @@ tags:
 ## 项目背景
 
     点评线上redis的docker集群用于生产线上有一段时间，也算是一个全新的尝
-    试，利用docker的优势实现搞笑的redis实例创建和调度。
+    试，利用docker的优势实现高效的redis实例创建和调度。
     
 ## 问题描述
 
@@ -174,3 +174,4 @@ dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
     但是nodiscard参数绝对不能弃用的，建议的解决方案是：
     1. Redis Aof产生的文件存储到外挂磁盘。
     2. 重新规划Redis集群的磁盘使用情况，禁止超配，再做观察。
+

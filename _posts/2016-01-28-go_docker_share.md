@@ -955,3 +955,6 @@ sudo dd if=/dev/sda1 of=/dev/null
 echo '8:0 1048576' >  /sys/fs/cgroup/blkio/wyp/blkio.throttle.read_bps_device
 echo [tid] > /sys/fs/cgroup/blkio/wyp/tasks
 ```
+
+
+
