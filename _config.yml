@@ -60,7 +60,7 @@ changyan_username: wangyapu
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "世界那么大，我也不想写代码"
+sidebar-about-description: "每天进步一点点"
 sidebar-avatar: /img/head.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
