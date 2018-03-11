@@ -679,6 +679,10 @@ pre code {
     margin-bottom: 10px
 }
 
+.post-preview > .post-title {
+    color: #009688;
+}
+
 .post-preview > .post-meta {
     font-family: 'Lora', 'Times New Roman', serif;
     color: #808080;
