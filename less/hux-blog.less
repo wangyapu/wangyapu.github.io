@@ -482,12 +482,15 @@ pre code{
 // Post Preview Pages (Home Page)
 
 .post-preview {
+	> .post-title {
+		color: @brand-primary-green
+	}
 	> a {
 		color: @gray-dark;
 		&:hover,
 		&:focus {
 			text-decoration: none;
-			color: @brand-primary;
+			color: @brand-primary-red;
 		}
 		> .post-title {
 			font-size: 21px;
