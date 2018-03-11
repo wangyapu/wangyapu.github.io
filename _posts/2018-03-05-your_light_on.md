@@ -4,7 +4,7 @@ title:      "读书笔记 —— 你的灯亮着吗"
 subtitle:   "\"发现问题的真正所在\""
 date:       2018-03-05 12:00:00
 author:     "wangyapu"
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "img/read_notes/pexels-photo-715842.jpeg"
 tags:
     - 读书笔记
 ---

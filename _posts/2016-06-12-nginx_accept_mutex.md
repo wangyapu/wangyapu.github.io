@@ -161,7 +161,7 @@ nginx使用accept_mutex选项控制进程是否添加accept事件。以下是几
 
 ## 总结
 
-- 以上描述的worker进程处理请求的原理表名nginx根本不会出现惊群现象。
+- 以上描述的worker进程处理请求的原理表明nginx根本不会出现惊群现象。
 
 - ngx_accept_disabled的变量来控制worker进程是否去竞争accept_mutex锁，虽然nginx的accept_mutax锁方法给每个worker进程提供平等的机会来竞争锁，但这种方法得到实际结果却不一定平均。
 
