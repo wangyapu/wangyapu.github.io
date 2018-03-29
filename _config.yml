@@ -45,7 +45,11 @@ markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
-
+# counter
+leancloud:
+  enable: true
+  app_id: 4u7AwHWc40N58tdE0N4meM1C-gzGzoHsz
+  app_key: ddCMdwW7Mfl6dFt7iw97RdXI
 
 # Disqus settings
 #disqus_username: wangyapu
