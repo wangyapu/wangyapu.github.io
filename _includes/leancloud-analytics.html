@@ -109,7 +109,7 @@
         if ($('.leancloud_visitors').length == 1) {
             // in post.html, so add 1 to hit counts
             addCount(Counter);
-        } else if ($('.post-link').length > 1) {
+        } else if ($('.post-preview').length > 1) {
             // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
             showHitCount(Counter);
         }
