@@ -20,6 +20,13 @@ description: "谋定而后动，知止而有得"
     </a>
     <p class="post-meta">
         Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
+        {% if site.leancloud.enable %}
+        <span id="{{ post.url }}" class="leancloud_visitors" data-flag-title="{{ post.title }}">
+            <span>|</span>
+            <span> <i class="fa fa-eye"></i> 浏览:  </span>
+            <span class="leancloud-visitors-count"></span>
+        </span>
+        {% endif %}
     </p>
 </div>
 <hr>
