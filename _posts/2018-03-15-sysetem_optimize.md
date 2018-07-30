@@ -56,13 +56,13 @@ tcpdump -i eth0 tcp and port 80 -s 0 -w traffic.pcap
 
 tcpcopy是一种请求复制工具，用于实时和离线回放，它可以将线上流量拷贝到测试机器，实时模拟线上的真实环境，达到程序不上线的情况下承担线上真实流量的测试。实战演习的必备工具。
 
-- tcpdump录制pace文件
+#### a. tcpdump录制pace文件
 	
 ```
 tcpdump -i eth0 -w online.pcap tcp and port 80
 ```
 	
-- 流量回放
+#### b. 流量回放
 	
 ```
 tcpcopy -x 80-10.1.x.x:80 -i traffic.pcap
@@ -70,7 +70,7 @@ tcpcopy -x 80-10.1.x.x:80 -i traffic.pcap
 tcpcopy -x 80-10.1.x.x:80 -a 2 -i traffic.pcap  // 离线回放加速2倍
 ```
 	
-- 引流模式
+#### c. 引流模式
 	
 ```
 tcpcopy -x 80-10.1.x.x:80 -r 20  // 20%引流
@@ -233,22 +233,22 @@ io吞吐、iowait
 
 所以`唯一定位磁盘成为性能瓶颈的直接方法还是看read/write时间`。下面我们着重介绍下如何定位io问题。
 
-1. 宏观确定是否是io的问题：top命令，可以从Cpu这一行看出浪费在I/O Wait上的CPU百分比；数值越高代表越多的CPU资源在等待I/O权限。
+a. 宏观确定是否是io的问题：top命令，可以从Cpu这一行看出浪费在I/O Wait上的CPU百分比；数值越高代表越多的CPU资源在等待I/O权限。
 
 ![](http://pcb6gvhga.bkt.clouddn.com/14995881340181.jpg)
 
-2. 确定具体磁盘问题：iostat
+b. 确定具体磁盘问题：iostat
 
 ![](http://pcb6gvhga.bkt.clouddn.com/14997890287955.jpg)
 
 %util直观地反应可哪一块磁盘正在被写入，反应了设备的繁忙程度。每毫秒读写请求(rrqm/s wrqm/s)以及每秒读写(r/s w/s)对排查问题也提供了很多有用的信息。
 
-3. 确定具体进程：简单粗暴的iotop直观地反映了哪些进程是导致io问题的罪魁祸首。
+c. 确定具体进程：简单粗暴的iotop直观地反映了哪些进程是导致io问题的罪魁祸首。
 
 ![](http://pcb6gvhga.bkt.clouddn.com/14997895654710.jpg)
 
 
-4. ps判断进程是否等待IO一样强大
+d. ps判断进程是否等待IO一样强大
 
 众所周知，ps命令为我们提供了内存、cpu以及进程状态等信息，根据进程状态可以很容易查到正在等待IO的进程信息。
 
@@ -285,7 +285,7 @@ write_bytes: 24645632
 cancelled_write_bytes: 3801088
 ```
 
-5. 确定哪个文件频繁读写：lsof -p pid
+e. 确定哪个文件频繁读写：lsof -p pid
 
 ![](http://pcb6gvhga.bkt.clouddn.com/14997929213911.jpg)
 
@@ -359,17 +359,17 @@ printf "0x%x" 6976
 
 ##### 3. Cpu消耗高的分析方法
 
-- 找出对应的java进程pid：
+a. 找出对应的java进程pid：
 
-    ```
-    ps -ef | grep java
-    ```
+```
+ps -ef | grep java
+```
 
-- 找出java进程中最消耗cpu的线程：
+b. 找出java进程中最消耗cpu的线程：
 
-    ```
-    top -H -p <pid>
-    ```
+```
+top -H -p <pid>
+```
 
 - 将找出的线程id转换为16进制
 - jstack获取java的线程堆栈
