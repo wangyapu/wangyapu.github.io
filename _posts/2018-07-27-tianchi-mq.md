@@ -13,7 +13,7 @@ tags:
 
    这次天池中间件性能大赛初赛和复赛的成绩都正好是`第五名`，本次整理了复赛《单机百万消息队列的存储设计》的思路方案分享给大家，实现方案上也是决赛队伍中相对比较特别的。
    
-## 赛题回顾
+## 赛题回顾wangyapu.iocoder.cn
    
 - 实现一个进程内的队列引擎，`单机可支持100万队列以上`。
 - 实现消息put、get接口。
@@ -50,7 +50,7 @@ tags:
 
 为了兼顾读写速度，我们最终采用了折中的设计方案：`多个队列merge，共享一个块存储。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/15326987338356.jpg)
+![](http://wangyapu.iocoder.cn/15326987338356.jpg)
 
 
 ## 设计核心思想
@@ -62,7 +62,7 @@ tags:
 
 ## 架构设计
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327015808705.jpg)
+![](http://wangyapu.iocoder.cn/15327015808705.jpg)
 
 
 架构图中Bucket Manager和Group Manager分别对百万队列进行分桶以及合并管理，然后左右两边是分别是写模块和读模块，数据写入包括队列merge处理，消息块落盘。读模块包括索引管理和读缓存。（见左图）
@@ -72,7 +72,7 @@ bucket、group、queue的关系：对消息队列进行bucket处理，每个buck
 
 ## 存储设计
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327026223088.jpg)
+![](http://wangyapu.iocoder.cn/15327026223088.jpg)
 
 
 - 对百万队列进行分桶处理。
@@ -87,19 +87,19 @@ bucket、group、queue的关系：对消息队列进行bucket处理，每个buck
 
 #### 1. 百万队列数据Bucket Hash分桶
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327037399900.jpg)
+![](http://wangyapu.iocoder.cn/15327037399900.jpg)
 
 
 #### 2. Bucket视角
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327038387055.jpg)
+![](http://wangyapu.iocoder.cn/15327038387055.jpg)
 
 - 每个Bucket分配多个Group
 - Group是管理多个队列的最小单位
 
 #### 3. Group分配过程
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327039962290.jpg)
+![](http://wangyapu.iocoder.cn/15327039962290.jpg)
 
 
 - 每个bucket持有一把锁，顺序为队列分配group，这里我们假设merge的数量为4个队列。
@@ -108,7 +108,7 @@ bucket、group、queue的关系：对消息队列进行bucket处理，每个buck
 
 #### 4. Group视角的数据写入
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327042392044.jpg)
+![](http://wangyapu.iocoder.cn/15327042392044.jpg)
 
 
 - 每个Group会分配Memtable的Block块用于实时写入。
@@ -122,18 +122,18 @@ bucket、group、queue的关系：对消息队列进行bucket处理，每个buck
 
 L2二级索引与数据存储的位置息息相关，见下图。`为每个排序后的Block块建立一个L2索引，L2索引的结构分为文件偏移(file offset)，数据压缩大小(size)，原始大小(raw size)，因为我们是多个队列merge，然后接下来是每个队列相对于起始位置的delta offset以及消息数量。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/15327049054876.jpg)
+![](http://wangyapu.iocoder.cn/15327049054876.jpg)
 
 #### 2. L1一级索引
 
 为了加快查询速度，在L2基础上建立L1一级索引，每`16个L2建立一个L1，L1按照时间先后顺序存放。`L1和L2的组织关系如下：
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328434447728.jpg)
+![](http://wangyapu.iocoder.cn/15328434447728.jpg)
 
 
 L1索引的结构非常简单，file id对应消息存储的文件id，以及16个Block块中每个队列消息的起始序列号seq num。例如MQ1从序列号1000开始，MQ2从序列号2000开始等等。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328440031305.jpg)
+![](http://wangyapu.iocoder.cn/15328440031305.jpg)
 
 #### 3. Index Query
 
@@ -141,7 +141,7 @@ L1索引的结构非常简单，file id对应消息存储的文件id，以及16�
 
 对L1先进行二分查找，定位到上下界范围，然后对范围内的所有L2进行顺序遍历。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328442977906.jpg)
+![](http://wangyapu.iocoder.cn/15328442977906.jpg)
 
 
 ### Data Flush
@@ -154,7 +154,7 @@ L1索引的结构非常简单，file id对应消息存储的文件id，以及16�
 
 DIO（DIRECT IO，直接IO），出于对系统cache和调度策略的不满，用户自己在应用层定制自己的文件读写。`DIO最大的优点就是能够减少OS内核缓冲区和应用程序地址空间的数据拷贝次数，降低文件读写时的CPU开销以及内存的占用。然而DIO的缺陷也很明显，DIO在数据读取时会造成磁盘大量的IO，它并没有缓冲IO从PageCache获取数据的优势。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328450129918.jpg)
+![](http://wangyapu.iocoder.cn/15328450129918.jpg)
 
 
 这里就遇到一个问题，同样配置的阿里云机器测试随机数据同步写入性能是非常高的，但是线上的评测数据都是58字节，数据过于规整导致同一时间落盘的概率很大，出现了大量的锁竞争。所以这里做了一个小的改进：按概率随机4K、8K、16K进行落盘，写性能虽有一定提升，但是效果也是不太理想，于是采用了第二种思路异步刷盘。
@@ -163,7 +163,7 @@ DIO（DIRECT IO，直接IO），出于对系统cache和调度策略的不满，�
 
 采用RingBuffer接收block块，使用AIO对多个block块进行Batch刷盘，减少IO Copy的次数。异步刷盘写性能有了显著的提升。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328776432365.jpg)
+![](http://wangyapu.iocoder.cn/15328776432365.jpg)
 
 以下是异步Flush的核心代码：
 
@@ -220,7 +220,7 @@ while (gWriterThread) {
 
 整个流程主要有两个优化点：`预读取和读缓存。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328788414149.jpg)
+![](http://wangyapu.iocoder.cn/15328788414149.jpg)
 
 
 ### 预读取优化
@@ -265,12 +265,12 @@ if (msgCount >= destCount) {
 
 Read Cache一共分为N=64（可配）个Bucket，每个Bucket中包含M=3200（可配）个缓存块，大概总计20w左右的缓存块，每个是4k，大约占用800M的内存空间。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328805562929.jpg)
+![](http://wangyapu.iocoder.cn/15328805562929.jpg)
 
 
 #### 2. 核心数据结构
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328808774528.jpg)
+![](http://wangyapu.iocoder.cn/15328808774528.jpg)
 
 关于缓存的核心数据结构，我们并没有从队列的角度出发，而是针对L2索引和缓存块进行了绑定，这里设计了一个双向指针。`判断缓存是否有效的核心思路：check双向指针是否相等。`
 
@@ -287,7 +287,7 @@ cachedItem->mIndexPtr == (void *) index;
 - 根据Manager Hash % N，找到对应的缓存Bucket。
 - L2还没有对应缓存块，需要进行缓存块分配。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15328818367354.jpg)
+![](http://wangyapu.iocoder.cn/15328818367354.jpg)
 
 
 **3.2 Alloc Cache Block**
@@ -296,7 +296,7 @@ cachedItem->mIndexPtr == (void *) index;
 - 分配下标为index的Cache Block。
 - 然后将对应的缓存块和我们的队列的L2索引进行双向指针绑定，同时对缓存块数据进行数据填充。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15330541290117.jpg)
+![](http://wangyapu.iocoder.cn/15330541290117.jpg)
 
 
 **3.3 Cache Hit**
@@ -308,11 +308,11 @@ cachedItem->mIndexPtr == (void *) index;
 - MQ1绑定的缓存块已经被MQ2替换。
 - index->mCache != index->mCache->index，双向指针已经不相等，缓存失效。需要为MQ1分配新的缓存块。
 
-![](http://pcb6gvhga.bkt.clouddn.com/15330566319233.jpg)
+![](http://wangyapu.iocoder.cn/15330566319233.jpg)
 
 - 原子变量进行自加操作，同时对M=3200块取模， 例如：`count.fetch_add(1) % M = M-1`，找到新的缓存块进行重新绑定。`说明：整个分配的逻辑是一个循环使用的过程，当所有的缓存桶都被使用，那么会从数组首地址开始重新分配、替换。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/15330566697685.jpg)
+![](http://wangyapu.iocoder.cn/15330566697685.jpg)
 
 #### 4. Read Cache & LRU & PageCache 对比
 

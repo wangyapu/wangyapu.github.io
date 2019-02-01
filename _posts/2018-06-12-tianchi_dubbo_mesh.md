@@ -13,7 +13,7 @@ tags:
 
    这次天池中间件性能大赛初赛和复赛的成绩都正好是`第五名`，出乎意料的是作为Golang是这次比赛的“稀缺物种”，这次在前十名中我也是侥幸存活在C大佬和Java大佬的中间。
    
-   关于这次初赛《Service Mesh for Dubbo》难度相对复赛《单机百万消息队列的存储设计》简单一些，最终成绩是`6983分`，因为一些Golang的小伙伴在正式赛512并发压测的时候大多都卡在6000分大关，这里主要跟大家分享下我在这次Golang版本的一些心得和踩过的坑。
+   关于这次初赛《Serviwangyapu.iocoder.cnce Mesh for Dubbo》难度相对复赛《单机百万消息队列的存储设计》简单一些，最终成绩是`6983分`，因为一些Golang的小伙伴在正式赛512并发压测的时候大多都卡在6000分大关，这里主要跟大家分享下我在这次Golang版本的一些心得和踩过的坑。
    
    由于工作原因实在太忙，比赛只有周末的时间可以突击，下一篇我会抽空整理下复赛《单机百万消息队列的存储设计》的思路方案分享给大家，个人感觉实现方案上也是决赛队伍中比较特别的。
    
@@ -24,7 +24,7 @@ tags:
    
    下图是一个官方提供的一个评测框架，整个场景由5个Docker 实例组成（蓝色的方框），分别运行了 etcd、Consumer、Provider服务和Agent代理。Provider是服务提供者，Consumer是服务消费者，Consumer消费Provider提供的服务。Agent是Consumer和Provider服务的代理，每个Consumer或 Provider都会伴随一个Agent。etcd是注册表服务，用来记录服务注册信息。从图中可以看出，Consumer 与Provider 之间的通讯并不是直接进行的，而是经过了Agent代理。这看似多余的一环，却在微服务的架构演进中带来了重要的变革。
    
-   ![](http://pcb6gvhga.bkt.clouddn.com/15324462480023.jpg)
+   ![](http://wangyapu.iocoder.cn/15324462480023.jpg)
 
 有关Service Mesh的更多内容，请参考下列文章：
 
@@ -60,7 +60,7 @@ tags:
    
    下面这张图基本涵盖了在整个agent所有优化的工作，图中绿色的箭头都是用户可以自己实现的。
 
-   ![](http://pcb6gvhga.bkt.clouddn.com/15324483540592.jpg)
+   ![](http://wangyapu.iocoder.cn/15324483540592.jpg)
 
 
 - 全部过程变成`异步非阻塞、无锁`，所有请求均采用异步回调的形式。这也是提升最大的一点。
@@ -114,7 +114,7 @@ ForBlock:
 
    Go因为有协程以及高质量的网络库，协程切换代价较小，所以大部分场景下Go推荐的网络玩法是每个连接都使用对应的协程来进行读写。
    
-   ![](http://pcb6gvhga.bkt.clouddn.com/15324504091219.jpg)
+   ![](http://wangyapu.iocoder.cn/15324504091219.jpg)
    
  
    这个版本的网络模型也取得了比较客观的成绩，QPS最高大约在4400~4500。对这个网络选型简单做下总结：
@@ -170,7 +170,7 @@ ForBlock:
 
 对优化之后的网络模式再进行一次梳理（见下图）：
 
-![](http://pcb6gvhga.bkt.clouddn.com/15324541151412.jpg)
+![](http://wangyapu.iocoder.cn/15324541151412.jpg)
 
 可以把eventLoop理解为io线程，在此之前每个网络通信c->ca，ca->pa，pa->p都单独使用的一个eventLoop。`如果入站的io协程和出站的io协程使用相同的协程，可以进一步降低Cpu切换的开销`。于是做了最后一个关于网络模型的优化：`复用EventLoop`，通过判断连接类型分别处理不同的逻辑请求。
 
