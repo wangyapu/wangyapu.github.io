@@ -247,7 +247,6 @@ public:
     uint32_t mCompletedSegment; // 已经完成的数据段计数
 
     pthread_mutex_t mMutex;
-    
     pthread_cond_t mCondition;
 };
 ```
@@ -256,7 +255,7 @@ public:
 
 在 Range 阶段如何保证预读线程能够充分利用 CPU 时间片以及打满 IO？采取了以下优化方案：
 
-1. Busy Waiting 架构
+#### Busy Waiting 架构
 
 Range 线程和预读线程的逻辑是非常相似的，Range 线程 Busy Waiting 地去获取缓存片，然后等待所有段都预读完成，遍历缓存片，释放缓存片。预读线程也是 Busy Waiting 地去获取缓存片，获取预读缓存片其中一段进行预读，通知 Range 该线程，释放缓存片。两者在获取缓存片唯一的区别就是 Range 线程每次获取不到会 usleep 一次让出时间片，而预读线程没有这步操作，尽可能把 CPU 打满。
 
@@ -308,9 +307,11 @@ for (auto mKeyOffset = mKeyOffsets.begin(); mKeyOffset != mKeyOffsets.end(); mKe
 item->ReleaseUsedRef();
 ```
 
-2. 预读线程绑核
+因为比赛环境的硬件配置很高，这里使用盲等去压榨 CPU 资源可以取得很好的效果，实测优于条件变量阻塞等待。`然而在实际工程中这种做法是比较奢侈的，应该利用无锁的架构控制自旋等待的限度，如果自旋超过限定的阈值仍没有成功获得锁，应当使用传统的方式去挂起线程。`
 
-为了让预读线程的性能达到极致，::根据 CPU 亲和性的特点将 2 个预读线程进行绑核，减少线程切换开销，保证预读可以打满 CPU 以及 IO。::
+#### 预读线程绑核
+
+为了让预读线程的性能达到极致，`根据 CPU 亲和性的特点将 2 个预读线程进行绑核，减少线程切换开销，保证预读可以打满 CPU 以及 IO。`
 
 ```cpp
 static bool BindCpuCore(uint32_t id) {
