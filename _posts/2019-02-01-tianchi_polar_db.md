@@ -233,15 +233,21 @@ public:
     void SetDataSegmentReady(); // 设置当前数据段预读完成，并向 Range 线程发送通知
 
     void ReleaseUsedRef(); // 释放缓存片引用计数
-
+    
     uint32_t mDBShardingIndex; // 数据库分片下标
+    
     void *mCacheDataPtr; // 数据缓存
+    
     uint32_t mUsedRef; // 缓存片引用计数 
+    
     uint32_t mDataSegmentCount; // 缓存片划分为若干段
+    
     uint32_t mFilledSegment; // 正在填充的数据段计数，用于预读线程获取分片时候的条件判断
-    uint32_t mCompletedSegment; // 已经完成的数据段计数，
+    
+    uint32_t mCompletedSegment; // 已经完成的数据段计数
 
     pthread_mutex_t mMutex;
+    
     pthread_cond_t mCondition;
 };
 ```
