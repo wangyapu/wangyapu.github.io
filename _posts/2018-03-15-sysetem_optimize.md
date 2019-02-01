@@ -146,7 +146,7 @@ Usage: wrk <options> <url>
 
 `dstat -lcdngy`
 
-![](http://pcb6gvhga.bkt.clouddn.com/14993638978642.jpg)
+![](http://wangyapu.iocoder.cn/14993638978642.jpg)
 
 dstat非常强大，可以实时的监控cpu、磁盘、网络、IO、内存等使用情况。
 
@@ -188,7 +188,7 @@ dstat非常强大，可以实时的监控cpu、磁盘、网络、IO、内存等�
     
 - 负载load：在特定时间间隔内运行队列中的平均进程数。每个CPU都有一个运行队列，队列里存放着已经就绪，等待被CPU执行的线程。`理想状态下，希望负载平均值小于等于Cpu核数。`
 
-![](http://pcb6gvhga.bkt.clouddn.com/14993645363499.jpg)
+![](http://wangyapu.iocoder.cn/14993645363499.jpg)
 
     
 Cpu使用率和load的区别：
@@ -235,17 +235,17 @@ io吞吐、iowait
 
 a. 宏观确定是否是io的问题：top命令，可以从Cpu这一行看出浪费在I/O Wait上的CPU百分比；数值越高代表越多的CPU资源在等待I/O权限。
 
-![](http://pcb6gvhga.bkt.clouddn.com/14995881340181.jpg)
+![](http://wangyapu.iocoder.cn/14995881340181.jpg)
 
 b. 确定具体磁盘问题：iostat
 
-![](http://pcb6gvhga.bkt.clouddn.com/14997890287955.jpg)
+![](http://wangyapu.iocoder.cn/14997890287955.jpg)
 
 %util直观地反应可哪一块磁盘正在被写入，反应了设备的繁忙程度。每毫秒读写请求(rrqm/s wrqm/s)以及每秒读写(r/s w/s)对排查问题也提供了很多有用的信息。
 
 c. 确定具体进程：简单粗暴的iotop直观地反映了哪些进程是导致io问题的罪魁祸首。
 
-![](http://pcb6gvhga.bkt.clouddn.com/14997895654710.jpg)
+![](http://wangyapu.iocoder.cn/14997895654710.jpg)
 
 
 d. ps判断进程是否等待IO一样强大
@@ -287,7 +287,7 @@ cancelled_write_bytes: 3801088
 
 e. 确定哪个文件频繁读写：lsof -p pid
 
-![](http://pcb6gvhga.bkt.clouddn.com/14997929213911.jpg)
+![](http://wangyapu.iocoder.cn/14997929213911.jpg)
 
 #### 网络
 
@@ -295,7 +295,7 @@ e. 确定哪个文件频繁读写：lsof -p pid
 
 netstat -nt 查看tcp相关连接状态、连接数以及发送队列和接收队列 
 
-![](http://pcb6gvhga.bkt.clouddn.com/15003685864974.jpg)
+![](http://wangyapu.iocoder.cn/15003685864974.jpg)
 
 关于tcp的状态需要大家熟悉三次握手和四次挥手的过程，这里先列出tcp的全部状态。
 
@@ -307,7 +307,7 @@ netstat -nt 查看tcp相关连接状态、连接数以及发送队列和接收�
 
 Tcp状态变化图（摘自网络）：
     
-![](http://pcb6gvhga.bkt.clouddn.com/15328858482257.jpg)
+![](http://wangyapu.iocoder.cn/15328858482257.jpg)
 
 
 关于tcp状态的几点说明：
@@ -346,7 +346,7 @@ sudo -u nobody jstack <pid> > /tmp/jstack.<pid>
        
 ##### 2. 如何从线程堆栈中找到本地线程对应的id
 
-![](http://pcb6gvhga.bkt.clouddn.com/15017782465588.jpg)
+![](http://wangyapu.iocoder.cn/15017782465588.jpg)
 
 nid=native thread id，特殊的是nid使用十六进制标识，本地线程id是十进制标识，所以通过进制换算就可以讲两者对应起来。
 
