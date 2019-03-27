@@ -56,7 +56,7 @@ tags:
 
 ### 现象2：磁盘并没有写满，还有很多空间
 
-![image](http://wangyapu0714.github.io/img/redis_docker_problem/dm_disk_total.png)
+![image](http://wangyapu.github.io/img/redis_docker_problem/dm_disk_total.png)
 
 因为devicemapper配了nodiscard，docker info看到的data space并不一定是实例真正使用的空间，所以利用脚本分别统计了每个实例所用的磁盘空间，发现每个实例所使用的磁盘空间大概都不到10g，均是redis aof产出的持久化文件。
 
@@ -132,7 +132,7 @@ docker info观察Data Space Used，很快上涨到约80G，但是脚本依然可
 
 -  ``猜想4：宿主机上有约20个Redis实例，发现并不是所有实例都挂掉，有一部分还在正常运行，新申请的Redis实例基本都无法正常工作，是否跟创建时间有关系？``
 
-![image](http://wangyapu0714.github.io/img/redis_docker_problem/docker_ps.jpg)
+![image](http://wangyapu.github.io/img/redis_docker_problem/docker_ps.jpg)
 
 -  ``猜想5：有可能老的Redis实例已经把磁盘吃满，新申请的实例无法重复使用已被旧Redis实例所申请过且已经被删除的文件所占用的空间资源。简单说就是，容器A使用过的空间资源中即使文件被删除，容器B也无法重复利用，好像容器A独享一样。``
 
@@ -150,11 +150,11 @@ dd if=/dev/zero of=/tmp/hello.txt bs=1G count=20
 
 在容器B里执行命令时，当Data Space Used上涨到约85G之后进程卡死，top观察load持续升高，此时容器docker run一个新的容器也是卡死状态。基本复现了线上Redis集群出现的问题。
 
-![image](http://wangyapu0714.github.io/img/redis_docker_problem/docker_info.jpg)
+![image](http://wangyapu.github.io/img/redis_docker_problem/docker_info.jpg)
 
-![image](http://wangyapu0714.github.io/img/redis_docker_problem/dd_file.jpg)
+![image](http://wangyapu.github.io/img/redis_docker_problem/dd_file.jpg)
 
-![image](http://wangyapu0714.github.io/img/redis_docker_problem/docker_run.jpg)
+![image](http://wangyapu.github.io/img/redis_docker_problem/docker_run.jpg)
     
     
 ## 结论

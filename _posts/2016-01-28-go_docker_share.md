@@ -16,8 +16,8 @@ tags:
 
 -----------------
 
-![](http://wangyapu0714.github.io/img/go_docker_share/go_logo.png)
-![](http://wangyapu0714.github.io/img/go_docker_share/docker_logo.png)
+![](http://wangyapu.github.io/img/go_docker_share/go_logo.png)
+![](http://wangyapu.github.io/img/go_docker_share/docker_logo.png)
 
 # 分享大纲
 
@@ -75,7 +75,7 @@ tags:
     Go命令行工具的革命性之处在于彻底消除了工程文件的概念,完全用目录结构和包名
     来推导工程结构和构建顺序。
 
-![go工程结构](http://wangyapu0714.github.io/img/go_docker_share/go_project_struct.png)
+![go工程结构](http://wangyapu.github.io/img/go_docker_share/go_project_struct.png)
 
     如何定位到对应的源代码靠GOPATH
     
@@ -309,16 +309,16 @@ func Try(fun func(), handler func(interface{})) {
 
 - **python、lua （用户级线程模型M:1）**
 
-    ![用户级线程模型](http://wangyapu0714.github.io/img/go_docker_share/python_model.png)
+    ![用户级线程模型](http://wangyapu.github.io/img/go_docker_share/python_model.png)
 
 - **Java （内核级线程模型1：1）**
 
-    ![内核级线程模型](http://wangyapu0714.github.io/img/go_docker_share/java_model.png)
+    ![内核级线程模型](http://wangyapu.github.io/img/go_docker_share/java_model.png)
     
     
 - **Golang （两级线程模型M:N）**
 
-    ![两级线程模型](http://wangyapu0714.github.io/img/go_docker_share/golang_model.png)
+    ![两级线程模型](http://wangyapu.github.io/img/go_docker_share/golang_model.png)
 
 ## 协程
 
@@ -896,13 +896,13 @@ int main() {
 
 - docker原有网络
 
-![docker网络](http://wangyapu0714.github.io/img/go_docker_share/nat_net.png)
+![docker网络](http://wangyapu.github.io/img/go_docker_share/nat_net.png)
 
 ---------------------
 
 - 点评的网络（docker、kvm通用）
 
-![点评内部网络](http://wangyapu0714.github.io/img/go_docker_share/host_net.png)
+![点评内部网络](http://wangyapu.github.io/img/go_docker_share/host_net.png)
 
 
 ## 模拟network namespace

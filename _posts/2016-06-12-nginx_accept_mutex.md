@@ -15,7 +15,7 @@ tags:
 
 nginx进程模型图：
 
-![image](http://wangyapu0714.github.io/img/nginx/nginx_process_model.png)
+![image](http://wangyapu.github.io/img/nginx/nginx_process_model.png)
 
 - nginx采用多进程的方式，nginx启动后一个master进程管理多个worker进程，一般worker进程个数会设置和cpu核数一样。
 

@@ -64,7 +64,7 @@ nginx内存池的基本思想是预先分配一大块内存作为内存池，小
 
 ## 内存池的物理结构 
 
-![image](http://wangyapu0714.github.io/img/nginx/nginx_pool_model.jpg)
+![image](http://wangyapu.github.io/img/nginx/nginx_pool_model.jpg)
 
 ## 内存池操作
 

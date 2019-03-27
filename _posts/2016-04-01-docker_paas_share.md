@@ -16,14 +16,14 @@ tags:
 
     docker --help
     
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/docker_command.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/docker_command.png)
 
 
 ## docker镜像与docker文件系统
 
 镜像是docker的灵魂所在，也是软件交付的产品。
 
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/docker_system.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/docker_system.png)
 
 
     FROM ubuntu:14.04
@@ -35,7 +35,7 @@ tags:
 
 容器启动时内部进程可见的文件系统视角。
 
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/rootfs.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/rootfs.png)
 
 ### union mount
 
@@ -56,20 +56,20 @@ image解决复用，images之间存在父子关系。
 
 rootfs中每个只读的image都可以称为一个layer。
 
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/layer.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/layer.png)
 
 ## cgroup、namespace与docker（具体见上次分享）
 
-[go与docker分享](http://wangyapu0714.github.io/2016/01/28/go_docker_share/)
+[go与docker分享](http://wangyapu.github.io/2016/01/28/go_docker_share/)
 
 
 ## PaaS架构设计
 
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/init_instance.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/init_instance.png)
 
 
 ## Docker结合Jenkins的思路
 
 
-![image](https://github.com/wangyapu0714/my_post/raw/master/md_pic/docker/docker_Jenkins.png)
+![image](https://github.com/wangyapu/my_post/raw/master/md_pic/docker/docker_Jenkins.png)
 

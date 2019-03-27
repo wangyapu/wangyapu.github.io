@@ -206,7 +206,7 @@ sysctl -p
 
 在反向代理环境中，最大并发数量应该是``worker_connections*worker_processes/2``。
 
-nginx连接池实现原理见另一篇博客： [理解Nginx连接池](http://wangyapu0714.github.io/2016/05/20/nginx_connection_pool/)
+nginx连接池实现原理见另一篇博客： [理解Nginx连接池](http://wangyapu.github.io/2016/05/20/nginx_connection_pool/)
 
 
 ### request
@@ -438,7 +438,7 @@ struct ngx_http_request_s {
     
 nginx处理http请求的具体过程：
 
-![image](http://wangyapu0714.github.io/img/nginx/nginx_http_process.png)
+![image](http://wangyapu.github.io/img/nginx/nginx_http_process.png)
 
 几个重要的相关概念：
 

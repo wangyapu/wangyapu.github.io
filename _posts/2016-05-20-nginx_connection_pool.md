@@ -189,7 +189,7 @@ struct ngx_cycle_s {
 
 连接池的模型图如下：
 
-![image](http://wangyapu0714.github.io/img/nginx/nginx_connections.png)
+![image](http://wangyapu.github.io/img/nginx/nginx_connections.png)
 
 
 Nginx在接收来自客户端的连接时，所使用的ngx_connection_t数据结构都是在启动阶段就预先分配好的，直接从连接池里获取。

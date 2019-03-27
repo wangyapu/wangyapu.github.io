@@ -121,7 +121,7 @@ Go
 
 -------------------
 
-![FUSE](http://wangyapu0714.github.io/img/lxcfs/fuse.png)
+![FUSE](http://wangyapu.github.io/img/lxcfs/fuse.png)
 
 
 FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hello挂载在/tmp/fuse目录下。当应用层程序要访问/tmp/fuse下的文件时，通过glibc中的函数进行系统调用，处理这些系统调用的VFS中的函数会调用FUSE在内核中的文件系统；内核中的FUSE文件系统将用户的请求，发送给用户态文件系统hello；用户态文件系统收到请求后，进行处理，将结果返回给内核中的FUSE文件系统；最后，内核中的FUSE文件系统将数据返回给用户态程序。
@@ -175,11 +175,11 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
     *** 1.00 表示刚好是在这座桥的承受范围内。
     *** 超过 1.00，那么说明这座桥已经超出负荷，交通严重的拥堵。 那么情况有多糟糕？
     
-![单核load描述](http://wangyapu0714.github.io/img/lxcfs/onecore_load.png)
+![单核load描述](http://wangyapu.github.io/img/lxcfs/onecore_load.png)
 
     在多处理器系统中，负载均值是基于内核的数量决定的。
     
-![多核load描述](http://wangyapu0714.github.io/img/lxcfs/twocore_load.png)
+![多核load描述](http://wangyapu.github.io/img/lxcfs/twocore_load.png)
 
     所以理想状态下，希望负载平均值小于等于Cpu核数。 
 
@@ -285,9 +285,9 @@ FUSE的工作原理如上图所示。假设基于FUSE的用户态文件系统hel
 
     结果：验证可行，lxcfs可以开始扩展了！（过一遍lxcfs修复load后的代码吧）
     
-![image](http://wangyapu0714.github.io/img/lxcfs/process_all_task.png)
+![image](http://wangyapu.github.io/img/lxcfs/process_all_task.png)
     
-![image](http://wangyapu0714.github.io/img/lxcfs/task_status.png)
+![image](http://wangyapu.github.io/img/lxcfs/task_status.png)
 
     
 
