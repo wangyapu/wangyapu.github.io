@@ -77,7 +77,7 @@ Facebook Gorilla 有详细阐述 delta-of-delta 编码的计算方式，以下�
 依然假设起始时间戳为 1571889600000，delta 的最大范围阈值为 3600s，占用存储空间对比如下：
 
 - delta 算法： 64 + 13 * 7 = 155bit 。
-- delta-of-delta 算法： 64 + 9 * 4 + 1 * 3 = 96bit 。
+- delta-of-delta 算法： 64 + 9 * 4 + 1 * 3 = 103bit 。
 
 可以看出 delta-of-delta 算法相比 delta 算法进一步获得了更高的压缩率。在实际应用场景中，海量时序数据的时间戳都是密集且连续的，绝大部分都满足 delta-of-delta=0 的条件，这样可以大幅度降低时间戳的存储空间。
 
