@@ -28,11 +28,11 @@ If you don't have intellij idea installed, return. 😂
 1. 找到需要断点的代码行，鼠标点击左侧边栏设置断点（CMD + F8 ）。好吧我废话了，这个大家都会。
 2. 右击断点，在 Condition 处填入你所需要的判断条件。
 
-![](http://wangyapu.iocoder.cn/15864909588043.jpg)
+    ![](http://wangyapu.iocoder.cn/15864909588043.jpg)
 
 3. 当 DEBUG 时候断点会停留在 i = 5 的位置。
 
-![](http://wangyapu.iocoder.cn/15864906470601.jpg)
+    ![](http://wangyapu.iocoder.cn/15864906470601.jpg)
  
 
 ### 不暂停断点调试
@@ -41,17 +41,17 @@ If you don't have intellij idea installed, return. 😂
 
 2. 启用不暂停断点，去除 Suspend 勾选框，勾选 “Breakpoint hit” message 以及 Evaluate and log。如果你对代码的调用层次不清楚或者你在阅读学习源码，你可以勾选 “Stack trace”，
 
-![](http://wangyapu.iocoder.cn/15866666619415.jpg)
+    ![](http://wangyapu.iocoder.cn/15866666619415.jpg)
 
-配合 Grep Console 插件，调试效果无敌。蓝色部分是我们打印的调试日志，红色框部分记录了断点是否执行以及代码调用的堆栈。
+    配合 Grep Console 插件，调试效果无敌。蓝色部分是我们打印的调试日志，红色框部分记录了断点是否执行以及代码调用的堆栈。
 
-![](http://wangyapu.iocoder.cn/15866667689018.jpg)
+    ![](http://wangyapu.iocoder.cn/15866667689018.jpg)
 
 3. 条件断点 & 变量值修改：条件断点就不再赘述了，Evaluate and log 不仅可以记录日志而且可以修改变量。如图所示，在 i==5 的时候，我人为添加了一条测试的假数据。
 
-![](http://wangyapu.iocoder.cn/15866676874067.jpg)
+    ![](http://wangyapu.iocoder.cn/15866676874067.jpg)
 
-![](http://wangyapu.iocoder.cn/15866678334658.jpg)
+    ![](http://wangyapu.iocoder.cn/15866678334658.jpg)
 
 ### 多线程断点调试
 
@@ -59,11 +59,11 @@ If you don't have intellij idea installed, return. 😂
 
 1. 设置线程断点。右击断点设置 Suspend 挂起条件为 Thread。
 
-![](http://wangyapu.iocoder.cn/15866759835238.jpg)
+    ![](http://wangyapu.iocoder.cn/15866759835238.jpg)
 
 2. 断点挂起时，可以切换线程进行调试。
 
- ![](http://wangyapu.iocoder.cn/15866767894973.jpg)
+    ![](http://wangyapu.iocoder.cn/15866767894973.jpg)
 
 ### ”后悔药“可以有
 
@@ -73,12 +73,11 @@ If you don't have intellij idea installed, return. 😂
 
 1. 如下图所示，如果我想回到第一个断点重新执行调试怎么办呢？
 
-![](http://wangyapu.iocoder.cn/15866784918277.jpg)
+    ![](http://wangyapu.iocoder.cn/15866784918277.jpg)
 
 2. 执行两次 Drop Frame 即可，可以看到 value 的值重新回到 0。
 
-![](http://wangyapu.iocoder.cn/15866785893517.jpg)
-
+    ![](http://wangyapu.iocoder.cn/15866785893517.jpg)
 
 > `该方法切勿在真实环境中使用！！！因为丢弃栈帧如果没有操作释放干净可能会影响变量的值，导致程序结果与真实结果不一致！！！`
 
