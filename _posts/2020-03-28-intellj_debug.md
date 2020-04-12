@@ -9,7 +9,7 @@ tags:
     - 工具
 ---
 
-# 压缩篇：XOR & DFCM
+# Intellij IDEA高阶DEBUG大杀器
 
 ## 前言
 
