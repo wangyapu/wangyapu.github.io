@@ -39,7 +39,7 @@ If you don't have intellij idea installed, return. 😂
 
 1. 依然找到需要断点的代码行。右击设置好的红色断点，选择 More（SHIFT + CMD + F8 ），此时会弹出断点的设置菜单。
 
-2. 启用不暂停断点，去除 Suspend 勾选框，勾选 “Breakpoint hit” message 以及 Evaluate and log。如果你对代码的调用层次不清楚或者你在阅读学习源码，你可以勾选 “Stack trace”，
+2. `启用不暂停断点，去除 Suspend 勾选框，勾选 “Breakpoint hit” message 以及 Evaluate and log。`如果你对代码的调用层次不清楚或者你在阅读学习源码，你可以勾选 “Stack trace”，
 
     ![](http://wangyapu.iocoder.cn/15866666619415.jpg)
 
@@ -47,7 +47,7 @@ If you don't have intellij idea installed, return. 😂
 
     ![](http://wangyapu.iocoder.cn/15866667689018.jpg)
 
-3. 条件断点 & 变量值修改：条件断点就不再赘述了，Evaluate and log 不仅可以记录日志而且可以修改变量。如图所示，在 i==5 的时候，我人为添加了一条测试的假数据。
+3. 条件断点 & 变量值修改：条件断点就不再赘述了，`Evaluate and log 不仅可以记录日志而且可以修改变量。`如图所示，在 i==5 的时候，我人为添加了一条测试的假数据。
 
     ![](http://wangyapu.iocoder.cn/15866676874067.jpg)
 
@@ -55,7 +55,7 @@ If you don't have intellij idea installed, return. 😂
 
 ### 多线程断点调试
 
-多线程调试蛮头疼的，因为代码执行的先后顺序完全看 CPU，断点跳来跳去，这就给调试带来了很多麻烦。
+多线程调试蛮头疼的，因为代码执行的先后顺序完全看 CPU，断点跳来跳去，这就给调试带来了很多麻烦。IDEA 具备多线程调试的切换能力，你可以按一定顺序来调试线程的代码。
 
 1. 设置线程断点。右击断点设置 Suspend 挂起条件为 Thread。
 
@@ -65,7 +65,7 @@ If you don't have intellij idea installed, return. 😂
 
     ![](http://wangyapu.iocoder.cn/15866767894973.jpg)
 
-### ”后悔药“可以有
+### “后悔药”可以有
 
 平时调试的过程中经常遇到断点不小心跳过了，想回头再看看刚才的值或者更进一步的 DEBUG，是不是傻头傻脑地重新再跑一遍？
 
