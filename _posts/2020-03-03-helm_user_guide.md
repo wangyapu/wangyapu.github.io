@@ -191,25 +191,25 @@ Job 更新后想重新升级版本，结果发现 Job 资源冲突。有以下�
 
 - pi-job.yaml
 
-```yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: pi
-  annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade,pre-rollback"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-    "helm.sh/hook-weight": "-5" # 字符串类型，可以为正数或者负数，在每个执行周期的时间点会对 hook 进行排序
-spec:
-  template:
+  ```yaml
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: pi
+      annotations:
+        "helm.sh/hook": "pre-install,pre-upgrade,pre-rollback"
+        "helm.sh/hook-delete-policy": "before-hook-creation"
+        "helm.sh/hook-weight": "-5" # 字符串类型，可以为正数或者负数，在每个执行周期的时间点会对 hook 进行排序
     spec:
-      containers:
-        - name: pi
-          image: perl
-          command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
-      restartPolicy: Never
-  backoffLimit: 4
-```
+      template:
+        spec:
+          containers:
+            - name: pi
+              image: perl
+              command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+          restartPolicy: Never
+      backoffLimit: 4
+  ```
 
 ### ConfigMap/Secret 更新不生效
 
@@ -218,10 +218,10 @@ spec:
 1. 应用程序实现定时读取 ConfigMap/Secret 的功能，更新配置参数。
 2. 在 Workload 的模板文件中加入以下内容（根据实际情况调整），只要有ConfigMap/Secret的变更，都会触发 Pod 的重建。
 
-```yaml
-annotations:
-    checksum/config: {{ include (print $.Chart.Name "/templates/" $.Chart.Name "-configmap.yaml") . | sha256sum }}
-```
+    ```
+    annotations:
+        checksum/config: {{ include (print $.Chart.Name "/templates/" $.Chart.Name "-configmap.yaml") . | sha256sum }}
+    ```
 
 ### 应用发布顺序依赖
 
