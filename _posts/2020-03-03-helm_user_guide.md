@@ -220,7 +220,7 @@ Job 更新后想重新升级版本，结果发现 Job 资源冲突。有以下�
 
     ```
     annotations:
-        checksum/config: {{ include (print $.Chart.Name "/templates/" $.Chart.Name "-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     ```
 
 ### 应用发布顺序依赖
