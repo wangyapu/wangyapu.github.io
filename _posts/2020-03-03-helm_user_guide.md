@@ -6,7 +6,7 @@ date:       2020-04-10 12:00:00
 author:     "wangyapu"
 header-img: "img/post-helm-user-guide.png"
 tags:
-    - 架构
+    - 云原生
 ---
 
 # Helm V3使用指北
@@ -45,7 +45,7 @@ Release 代表 Chart 在集群中的运行实例，同一个集群的同一个 N
 
 ## Helm V2 & V3 架构设计
 
-Helm V2 到 V3 经历了较大的变革，其中最大的改动就是移除了 Tiller 组件，所有功能都通过 Helm CLI 与 ApiServer 直接交互。Tiller 在 V2 的架构中扮演这重要的角色，但是它与 K8S 的设计理念是冲突的。
+Helm V2 到 V3 经历了较大的变革，其中最大的改动就是移除了 Tiller 组件，所有功能都通过 Helm CLI 与 ApiServer 直接交互。Tiller 在 V2 的架构中扮演着重要的角色，但是它与 K8S 的设计理念是冲突的。
 
 1. 围绕 Tiller 管理应用的生命周期不利于扩展。
 2. 增加用户的使用壁垒，服务端需要部署 Tiller 组件才可以使用，侵入性强。
@@ -165,9 +165,11 @@ Job 更新后想重新升级版本，结果发现 Job 资源冲突。有以下�
 
 **hook 删除策略**
 
-1. hook-succeeded：hook 成功执行后删除。
-2. hook-failed：hook 执行期间失败删除。
-3. before-hook-creation：创建新 hook 之前删除以前的 hook。
+| 名称 | 说明 |
+| --- | --- |
+| hook-succeeded | hook 成功执行后删除 |
+| hook-failed | hook 执行期间失败删除 |
+| before-hook-creation | 创建新 hook 之前删除以前的 hook |
 
 **hooks 的常用场景**
 
@@ -179,7 +181,7 @@ Job 更新后想重新升级版本，结果发现 Job 资源冲突。有以下�
 
 - Chart 目录结构
 
-  ```
+  ```bash
     test-job
     ├── Chart.yaml
     ├── charts
@@ -216,11 +218,11 @@ Job 更新后想重新升级版本，结果发现 Job 资源冲突。有以下�
 部署好的应用，再次变更 ConfigMap/Secret 后，Workload 并无法感知。有以下解决办法：
 
 1. 应用程序实现定时读取 ConfigMap/Secret 的功能，更新配置参数。
-2. 在 Workload 的模板文件中加入以下内容（根据实际情况调整），只要有ConfigMap/Secret的变更，都会触发 Pod 的重建。
+2. 在 Workload 模板文件的 spec.template.metadata 中加入如下内容，只要有 ConfigMap/Secret 的变更，都会触发 Pod 的重建。
 
-    ```
+    ```yaml
     annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Chart.Name "/templates/" $.Chart.Name "-configmap.yaml") . | sha256sum }}
     ```
 
 ### 应用发布顺序依赖
