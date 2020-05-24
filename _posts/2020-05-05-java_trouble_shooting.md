@@ -4,7 +4,7 @@ title:      "工具百宝箱（1）— Java日常问题诊断方法"
 subtitle:   "\"磨刀不误砍柴工\""
 date:       2020-05-05 12:00:00
 author:     "wangyapu"
-header-img: "img/post-idea-debug.jpeg"
+header-img: "img/post-java-trouble-shooting.png"
 tags:
     - Java
 ---
