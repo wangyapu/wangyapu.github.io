@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "工具百宝箱（1）—— Java日常问题诊断方法"
+title:      "工具百宝箱（1）— Java日常问题诊断方法"
 subtitle:   "\"磨刀不误砍柴工\""
 date:       2020-05-05 12:00:00
 author:     "wangyapu"
@@ -9,7 +9,7 @@ tags:
     - Java
 ---
 
-# 工具百宝箱（1）—— Java日常问题诊断方法
+# 工具百宝箱（1）— Java日常问题诊断方法
 
 ## 日志检索
 
@@ -53,15 +53,11 @@ User：CPU 在用户态空间（用户进程）的运行时间比例。
 
     - 找出对应的 Java 进程 pid
     
-        ```
-        ps -ef | grep java
-        ```
+        `ps -ef | grep java`    
     
     - 找出 Java 进程中最消耗 CPU 的线程
     
-        ```
-        top -H -p <pid>
-        ```
+        `top -H -p <pid>`
     
     - 将找出的线程 id 转换为 16 进制
     
@@ -72,9 +68,7 @@ User：CPU 在用户态空间（用户进程）的运行时间比例。
 
 2. 频繁 GC
 
-    ```
-    jstat -gcutil pid interval(ms)
-    ```
+    `jstat -gcutil pid interval(ms)`
 
 ### CPU System高 & Load高
 
@@ -143,7 +137,7 @@ lsof -p <pid>
 常用解决与优化方法：
 
 - 有效控制资源数量，例如使用线程池等。 
-- 了解磁盘特性是必要的，一般随机写转顺序写，同步写转异步写，IO 合并都可以可以得到较好的改善。
+- 了解磁盘特性是必要的，一般随机写转顺序写，同步写转异步写，IO 合并都可以得到较好的改善。
 - 压缩 & Dirty Page 优化。Linux 操作系统中，当 Dirty Page 的大小达到总物理内存大小 10%，操作系统会进行刷盘但不阻塞系统调用的写线程，若达到物理内存大小的 20%，写线程会被阻塞。通过合适的压缩算法减少落盘数据的大小通常效果显著。
 - 预读取和读缓存。
 - Zero Copy。
@@ -214,7 +208,7 @@ OOM 常见原因与排查方法：
     - ps 等操作 Linux 会出现 Resource temporarily unavailable 错误。
     - 修改 /etc/security/limits.conf 配置。
 
-6. MMAP
+6. MMap
 
     - MAP_SHARED、MAP_PRIVATE、MAP_ANONYMOUS、MAP_NORESERVE，在不同的模式下表现行为不同，例如常用的 MAP_PRIVATE，如果程序没有及时释放资源会遭遇 OOM Killer。
     - MMAP 的文件数量超过了 vm.max_map_count 限制。
@@ -231,7 +225,7 @@ OOM 常见原因与排查方法：
 2. 线程池耗尽
 
     - 扩大线程池数量
-    - 避免处理过长的业务逻辑
+    - 避免处理时间过长的业务逻辑
     - 降低超时时间
 
 3. 客户端或者服务端频繁 GC
@@ -240,17 +234,17 @@ OOM 常见原因与排查方法：
     - YGC 时间长：常见有两个原因年轻代存活对象太多；老年代引用年轻代对象太多（跨代引用）。
     - Stop-The-World GC
         - System.gc() 或者 jmap -histo:live 主动触发
-        - PermGen Space / Meta space空间不足
+        - PermGen Space / Meta space 空间不足
         - YGC 晋升到老年代的平均大小大于老年代剩余空间
         - CMS GC 中 Remark 时间长：可通过 CMSScavengeBeforeRemark 参数保证 Remark 前进行一次 Minor GC
         - promotion failed：对象晋升的目标区域没有足够的空间
-        - concurrent mode failure：CMS GC的过程的同时业务进程申请老年代空间，而此时老年代空间不足导致。
+        - concurrent mode failure：CMS GC 的过程的同时业务进程申请老年代空间，而此时老年代空间不足导致。
         - 大对象分配失败，视 GC 算法不同可优化不同的参数，如 -XX:G1HeapRegionSize
 
 4. 网络异常
 
     - 重点关注 CLOSE_WAIT，可能连接未关闭导致资源消耗殆尽。
-    - netstat -nt 查看tcp相关连接状态、连接数以及发送队列和接收队列。正常的连接应该是 ESTABLISHED 状态，如果存在大量的 SYN_SENT 的连接，则需要看下防火墙规则。`如果 Recv-Q 或者 Send-Q 持续有大量包存在，意味着连接存在瓶颈或者程序存在 bug。`
+    - netstat -nt 查看 TCP 相关连接状态、连接数以及发送队列和接收队列。正常的连接应该是 ESTABLISHED 状态，如果存在大量的 SYN_SENT 的连接，则需要看下防火墙规则。`如果 Recv-Q 或者 Send-Q 持续有大量包存在，意味着连接存在瓶颈或者程序存在 bug。`
 
 5. 客户端或者服务端 CPU 使用率高，排查方法同 CPU 相关小节。 
 6. 对象未序列化，检查是否实现 Serializable 序列化接口等。
