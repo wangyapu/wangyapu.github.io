@@ -28,20 +28,19 @@ tags:
 
 1. 快捷键呼出，文本、颜色、文件、链接全部通吃，再也不用重新复制了。
 
-![](http://wangyapu.iocoder.cn/15903984548643.jpg)
+    ![](http://wangyapu.iocoder.cn/15903984548643.jpg)
 
 2. Paste 可以保存非常久的历史记录，支持搜索快速定位。
 
-![](http://wangyapu.iocoder.cn/15903987664655.jpg)
+    ![](http://wangyapu.iocoder.cn/15903987664655.jpg)
 
 3. 常用的文本可以钉起来，比如做技术支持常用的客服语句、常用的 Linux 命令等等。
 
-![](http://wangyapu.iocoder.cn/15903989565093.jpg)
+    ![](http://wangyapu.iocoder.cn/15903989565093.jpg)
 
 ## Alfred
 
 ![-w425](http://wangyapu.iocoder.cn/15904114910910.jpg)
-
 
 推荐指数：⭐️⭐️⭐️⭐️⭐️
 
@@ -49,15 +48,15 @@ tags:
 
 - 文件搜索
 
-![](http://wangyapu.iocoder.cn/15904132761346.jpg)
+    ![](http://wangyapu.iocoder.cn/15904132761346.jpg)
 
 - 有道翻译
 
-![](http://wangyapu.iocoder.cn/15904142484149.jpg)
+    ![](http://wangyapu.iocoder.cn/15904142484149.jpg)
 
 - Kill Process Named
 
-![](http://wangyapu.iocoder.cn/15904135413480.jpg)
+    ![](http://wangyapu.iocoder.cn/15904135413480.jpg)
 
 更多 Alfred Workflow 欢迎关注公众号并回复”小帽子“即可获取下载链接。
 
@@ -88,11 +87,11 @@ CMD + TAB 多窗口随意切！
 
 - 窗口全切换
 
-![](http://wangyapu.iocoder.cn/15904189913981.jpg)
+    ![](http://wangyapu.iocoder.cn/15904189913981.jpg)
 
 - 软件内切换
 
-![](http://wangyapu.iocoder.cn/15904190049794.jpg)
+    ![](http://wangyapu.iocoder.cn/15904190049794.jpg)
 
 
 ## Magnet
