@@ -16,24 +16,24 @@ tags:
 1. 常用参数：
 
     -i：指定需要的网
-    -s：抓取数据包时默认抓取长度为68字节，加上-s 0后可以抓到完整的数据包
+    -s：抓取数据包时默认抓取长度为 68 字节，加上-s 0后可以抓到完整的数据包
     -w：监听的数据包写入指定的文件
 
 2. 示例
 
-```
-tcpdump -i eth1 host 10.1.1.1  // 抓取所有经过eth1，目的或源地址是10.1.1.1的网络数据包 
+    ```
+    tcpdump -i eth1 host 10.1.1.1  // 抓取所有经过eth1，目的或源地址是10.1.1.1的网络数据包 
+    
+    tcpdump -i eth1 src host 10.1.1.1  // 源地址
+    
+    tcpdump -i eth1 dst host 10.1.1.1  // 目的地址
+    ```
 
-tcpdump -i eth1 src host 10.1.1.1  // 源地址
+    如果想使用 wireshark 分析 tcpdump 的包，需要加上是 -s 参数：
 
-tcpdump -i eth1 dst host 10.1.1.1  // 目的地址
-```
-
-如果想使用wireshark分析tcpdump的包，需要加上是 -s 参数：
-
-```bash
-tcpdump -i eth0 tcp and port 80 -s 0 -w traffic.pcap
-```
+    ```bash
+    tcpdump -i eth0 tcp and port 80 -s 0 -w traffic.pcap
+    ```
 
 ## tcpdump分析客户端流量
 
