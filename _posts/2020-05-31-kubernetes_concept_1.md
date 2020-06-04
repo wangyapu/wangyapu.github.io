@@ -72,7 +72,7 @@ RS 用于控制任何时刻 Pod 副本的数量，并保证 Pod 是可用的，R
 
 ### Deployment
 
-Deployment是基于 ReplicaSet 来实现 Pod 的自动化管理。为什么 RS 不能实现？RS 只管理 Pod，更新 Pod template，是不会重新部署 Pod 的，它只会对新创建的 Pod 生效。Deployment 不仅具备 RS 的所有特性，而且具备事件状态、版本记录、回滚等更加丰富的特性。
+Deployment是基于 ReplicaSet 来实现 Pod 的自动化管理。为什么 RS 不能实现？RS 只管理 Pod 标签，更新 Pod template，是不会重新部署 Pod 的，只会对新创建的 Pod 生效。Deployment 不仅具备 RS 的所有特性，而且具备事件状态、版本记录、回滚等更加丰富的特性。
 
 Deployment 如何扩缩容？
 
