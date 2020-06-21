@@ -4,7 +4,7 @@ title:      "Kubernetes关键知识点（二）"
 subtitle:   "\"摆摊也能说我了解K8S了\""
 date:       2020-05-31 12:00:00
 author:     "wangyapu"
-header-img: "img/post-kubernetes-concept-2.jpg"
+header-img: "img/post-kubernetes-concept-2.png"
 tags:
     - 云原生
 ---
@@ -47,7 +47,7 @@ CronJob 指定时运行任务，它在 Job 上加上了时间调度。schedule �
 
 ### Volume
 
-Volume是对各种存储资源的抽象，为管理存储资源提供统一的接口。
+Volume 是对各种存储资源的抽象，为管理存储资源提供统一的接口。
 
 Volume 的生命周期与 Pod 的保持一致，当 Pod 被删除，对应的 Volume 也会被删除，这里并不是指数据也会被删除。
 
@@ -81,7 +81,7 @@ PV & PVC 可以说是用于定义网络存储，单独在这里写说明它的�
 
 PV 和 PVC 的关注点不一样，PV 描述了存储类型以及复杂的存储信息，而 PVC 是对存储的二次抽象，让用户不需要关心存储底层的细节，用户只需要通过 PVC 定义自己关心的需求，例如存储大小、访问权限等，降低用户的使用心智。
 
-![](media/15927398447233.jpg)
+![](http://wangyapu.iocoder.cn/15927398447233.jpg)
 
 PV 的生命周期：
 
